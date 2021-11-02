@@ -1,3 +1,5 @@
+[![javaEksamen](https://github.com/kristiania-pgr203-2021/pgr203-exam-java-2021/actions/workflows/maven.yml/badge.svg)](https://github.com/kristiania-pgr203-2021/pgr203-exam-java-2021/actions/workflows/maven.yml)
+
 # PGR203 Avansert Java eksamen
 
 

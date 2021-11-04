@@ -1,15 +1,15 @@
 package no.kristiania.http;
 
 public class Questionnaire {
-    private Long id;
+    private long id;
     private String questionTitle;
     private String questionText;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

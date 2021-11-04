@@ -1,13 +1,9 @@
 package no.kristiania.http;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class QuestionnaireDao {
-
 
     private final DataSource dataSource;
 
@@ -20,17 +16,23 @@ public class QuestionnaireDao {
 
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "insert into questions (question_title, question_text) values (?, ?)"
+                    "insert into questions (question_title, question_text) values (?, ?)",
+                    Statement.RETURN_GENERATED_KEYS
             )) {
                 statement.setString(1, questionnaire.getQuestionTitle());
                 statement.setString(2, questionnaire.getQuestionText());
 
                 statement.executeUpdate();
+
+                try (ResultSet rs = statement.getGeneratedKeys()) {
+                    rs.next();
+                    questionnaire.setId(rs.getLong("id"));
+                }
             }
         }
     }
 
-    public Questionnaire retrieve(Long id) throws SQLException {
+    public Questionnaire retrieve(long id) throws SQLException {
 
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
@@ -42,6 +44,7 @@ public class QuestionnaireDao {
                     rs.next();
 
                     Questionnaire questionnaire = new Questionnaire();
+                    questionnaire.setId(rs.getLong("id"));
                     questionnaire.setQuestionTitle(rs.getString("question_title"));
                     questionnaire.setQuestionText(rs.getString("question_text"));
                     return questionnaire;

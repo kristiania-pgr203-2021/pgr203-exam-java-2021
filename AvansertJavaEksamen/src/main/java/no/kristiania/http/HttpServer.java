@@ -1,6 +1,11 @@
 package no.kristiania.http;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -13,6 +18,8 @@ import java.util.Map;
 
 public class HttpServer {
 
+
+    static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
     private Path rootDirectory;
     private List<String> roles = new ArrayList<>();
@@ -32,6 +39,7 @@ public class HttpServer {
             }
 
         } catch (IOException e) {
+            logger.warn("invalid input or invalid output has occurred" + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -43,12 +51,21 @@ public class HttpServer {
         String[] requestLine = httpMessage.startLine.split(" ");
         String requestTarget = requestLine[1];
 
+        int questionPos = requestTarget.indexOf('?');
+        String fileTarget;
+        String query = null;
+        if (questionPos != -1) {
+            fileTarget = requestTarget.substring(0, questionPos);
+            query = requestTarget.substring(questionPos+1);
+        } else {
+            fileTarget = requestTarget;
+        }
+
         if (requestTarget.equals("/api/questions")){
 
             String responseText = null;
             if (responseText == null){
-                responseText = "<label for=\"cars\">Choose a car:</label>\n";
-                //responseText = "<h3>List is empty</h3>";
+                responseText = "<h3>List is empty</h3>";
             }
 
             writeOkResponse(clientSocket, responseText, "text/html");
@@ -67,9 +84,12 @@ public class HttpServer {
         }
         else {
 
-            if (rootDirectory != null && Files.exists(rootDirectory.resolve(requestTarget.substring(1)))){
+            InputStream fileResource = getClass().getResourceAsStream(fileTarget);
 
-                String responseText = Files.readString(rootDirectory.resolve(requestTarget.substring(1)));
+            if (fileResource != null) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                fileResource.transferTo(buffer);
+                String responseText = buffer.toString();
 
                 String contentType = "text/plain";
                 if (requestTarget.endsWith(".html")){

@@ -46,6 +46,19 @@ class QuestionnaireDaoTest {
 
     }
 
+    @Test
+    void shouldListAllQuestions() throws SQLException {
+        Questionnaire qre = exampleQuestionnaire();
+        dao.save(qre);
+
+        Questionnaire anotherQre = exampleQuestionnaire();
+        dao.save(anotherQre);
+
+        assertThat(dao.listAll())
+                .extracting(Questionnaire::getId)
+                .contains(qre.getId(), anotherQre.getId());
+    }
+
     private Questionnaire exampleQuestionnaire() {
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setQuestionTitle(pickOne("Food", "Car", "Customers", "Education", "Healthcare"));

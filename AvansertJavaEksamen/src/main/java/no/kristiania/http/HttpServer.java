@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +19,6 @@ public class HttpServer {
 
     static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
-    private Path rootDirectory;
     private List<String> roles = new ArrayList<>();
 
 
@@ -138,16 +135,11 @@ public class HttpServer {
 
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(8000);
-        httpServer.setRoot(Paths.get("AvansertJavaEksamen/src/main/resources"));
 
     }
 
     public int getPort() {
         return serverSocket.getLocalPort();
-    }
-
-    public void setRoot(Path RootDirectory) {
-        this.rootDirectory = RootDirectory;
     }
 
     public void setRoles(List<String> roles) {

@@ -69,6 +69,25 @@ public class QuestionnaireDao {
         }
     }
 
+    public List<Questionnaire> listAll() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select * from questions"
+            )) {
+
+                try (ResultSet rs = statement.executeQuery()) {
+
+                    ArrayList<Questionnaire> questionnaires = new ArrayList<>();
+
+                    while (rs.next()) {
+                        questionnaires.add(mapFromResultSet(rs));
+                    }
+                    return questionnaires;
+                }
+            }
+        }
+    }
+
     private Questionnaire mapFromResultSet(ResultSet rs) throws SQLException {
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setId(rs.getLong("id"));
@@ -77,8 +96,4 @@ public class QuestionnaireDao {
         return questionnaire;
     }
 
-
-    public List<Questionnaire> listAll() {
-        return null;
-    }
 }

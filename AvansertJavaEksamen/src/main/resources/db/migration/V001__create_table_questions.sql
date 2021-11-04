@@ -1,4 +1,4 @@
-create table if not exists
+create table if not exists questions
 (
     id serial primary key ,
     question_title varchar (50) not null ,

@@ -69,6 +69,11 @@ public class HttpServer {
                 responseText = "<h3>List is empty</h3>";
             }
 
+            Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
+            Questionnaire qre = new Questionnaire();
+            qre.setQuestionTitle((queryMap.get("questionTitle")));
+            this.questionnaires.add(qre);
+
             writeOkResponse(clientSocket, responseText, "text/html");
         }
 

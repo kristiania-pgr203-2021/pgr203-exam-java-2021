@@ -15,7 +15,6 @@ class QuestionnaireDaoTest {
     @Test
     void shouldRetrieveSavedQuestion() throws SQLException {
 
-
         Questionnaire questionnaire = exampleQuestionnaire();
         dao.save(questionnaire);
 
@@ -23,6 +22,27 @@ class QuestionnaireDaoTest {
                 .usingRecursiveComparison()
                 .isEqualTo(questionnaire)
         ;
+
+    }
+
+    @Test
+    void shouldListQuestionsByTitle() throws SQLException {
+
+        Questionnaire matchingTitle = exampleQuestionnaire();
+        matchingTitle.setQuestionTitle("TestTitle");
+        dao.save(matchingTitle);
+
+        Questionnaire anotherMatchingTitle = exampleQuestionnaire();
+        anotherMatchingTitle.setQuestionTitle(matchingTitle.getQuestionTitle());
+        dao.save(anotherMatchingTitle);
+
+        Questionnaire nonMatchingTitle = exampleQuestionnaire();
+        dao.save(nonMatchingTitle);
+
+        assertThat(dao.listByTitle(matchingTitle.getQuestionTitle()))
+                .extracting(Questionnaire::getId)
+                .contains(matchingTitle.getId(), anotherMatchingTitle.getId())
+                .doesNotContain(nonMatchingTitle.getId());
 
     }
 

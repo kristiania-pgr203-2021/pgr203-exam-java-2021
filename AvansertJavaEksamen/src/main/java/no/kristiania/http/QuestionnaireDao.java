@@ -2,6 +2,8 @@ package no.kristiania.http;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class QuestionnaireDao {
 
@@ -48,6 +50,31 @@ public class QuestionnaireDao {
                     questionnaire.setQuestionTitle(rs.getString("question_title"));
                     questionnaire.setQuestionText(rs.getString("question_text"));
                     return questionnaire;
+                }
+            }
+        }
+    }
+
+    public List<Questionnaire> listByTitle(String title) throws SQLException {
+
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select * from questions where question_title = ?"
+            )) {
+                statement.setString(1, title);
+
+                try (ResultSet rs = statement.executeQuery()) {
+
+                    ArrayList<Questionnaire> questionnaires = new ArrayList<>();
+
+                    while (rs.next()) {
+                        Questionnaire qre = new Questionnaire();
+                        qre.setId(rs.getLong("id"));
+                        qre.setQuestionTitle(rs.getString("question_title"));
+                        qre.setQuestionText(rs.getString("question_text"));
+                        questionnaires.add(qre);
+                    }
+                    return questionnaires;
                 }
             }
         }

@@ -15,7 +15,6 @@ public class QuestionnaireDao {
     }
 
     public void save(Questionnaire questionnaire) throws SQLException {
-
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "insert into questions (question_title, question_text) values (?, ?)",
@@ -35,7 +34,6 @@ public class QuestionnaireDao {
     }
 
     public Questionnaire retrieve(long id) throws SQLException {
-
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "select * from questions where id = ?"
@@ -45,18 +43,13 @@ public class QuestionnaireDao {
                 try (ResultSet rs = statement.executeQuery()) {
                     rs.next();
 
-                    Questionnaire questionnaire = new Questionnaire();
-                    questionnaire.setId(rs.getLong("id"));
-                    questionnaire.setQuestionTitle(rs.getString("question_title"));
-                    questionnaire.setQuestionText(rs.getString("question_text"));
-                    return questionnaire;
+                    return mapFromResultSet(rs);
                 }
             }
         }
     }
 
     public List<Questionnaire> listByTitle(String title) throws SQLException {
-
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "select * from questions where question_title = ?"
@@ -68,15 +61,19 @@ public class QuestionnaireDao {
                     ArrayList<Questionnaire> questionnaires = new ArrayList<>();
 
                     while (rs.next()) {
-                        Questionnaire qre = new Questionnaire();
-                        qre.setId(rs.getLong("id"));
-                        qre.setQuestionTitle(rs.getString("question_title"));
-                        qre.setQuestionText(rs.getString("question_text"));
-                        questionnaires.add(qre);
+                        questionnaires.add(mapFromResultSet(rs));
                     }
                     return questionnaires;
                 }
             }
         }
+    }
+
+    private Questionnaire mapFromResultSet(ResultSet rs) throws SQLException {
+        Questionnaire questionnaire = new Questionnaire();
+        questionnaire.setId(rs.getLong("id"));
+        questionnaire.setQuestionTitle(rs.getString("question_title"));
+        questionnaire.setQuestionText(rs.getString("question_text"));
+        return questionnaire;
     }
 }

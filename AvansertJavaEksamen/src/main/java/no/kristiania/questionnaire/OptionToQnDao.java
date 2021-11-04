@@ -2,6 +2,7 @@ package no.kristiania.questionnaire;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OptionToQnDao {
@@ -56,7 +57,19 @@ public class OptionToQnDao {
     }
 
 
-    public List<OptionToQn> listAll() {
-        return null;
+    public List<OptionToQn> listAll() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select * from option_to_qn"
+            )) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<OptionToQn> optionList = new ArrayList<>();
+                    while (rs.next()) {
+                        optionList.add(mapFromResultSet(rs));
+                    }
+                    return optionList;
+                }
+            }
+        }
     }
 }

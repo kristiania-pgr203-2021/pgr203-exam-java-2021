@@ -76,9 +76,7 @@ public class QuestionnaireDao {
             )) {
 
                 try (ResultSet rs = statement.executeQuery()) {
-
                     ArrayList<Questionnaire> questionnaires = new ArrayList<>();
-
                     while (rs.next()) {
                         questionnaires.add(mapFromResultSet(rs));
                     }

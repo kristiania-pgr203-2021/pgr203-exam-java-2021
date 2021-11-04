@@ -1,4 +1,4 @@
-package no.kristiania.http;
+package no.kristiania.questionnaire;
 
 public class Questionnaire {
     private long id;

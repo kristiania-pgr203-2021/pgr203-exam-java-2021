@@ -135,6 +135,7 @@ public class HttpServer {
 
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(8000);
+        logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
 
     }
 

@@ -1,4 +1,4 @@
-package no.kristiania.http;
+package no.kristiania.questionnaire;
 
 import org.junit.jupiter.api.Test;
 
@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class QuestionnaireDaoTest {
 

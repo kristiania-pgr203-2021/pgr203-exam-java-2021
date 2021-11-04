@@ -47,7 +47,8 @@ public class HttpServer {
 
             String responseText = null;
             if (responseText == null){
-                responseText = "<h3>List is empty</h3>";
+                responseText = "<label for=\"cars\">Choose a car:</label>\n";
+                //responseText = "<h3>List is empty</h3>";
             }
 
             writeOkResponse(clientSocket, responseText, "text/html");

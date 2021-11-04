@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class HttpPostClient {
     private final HttpMessage httpMessage;
@@ -17,9 +18,7 @@ public class HttpPostClient {
                 "Connection: close\r\n" +
                 "\r\n" +
                 contentBody;
-        socket.getOutputStream().write(request.getBytes());
-
-
+        socket.getOutputStream().write(request.getBytes(StandardCharsets.ISO_8859_1.toString()));
 
         httpMessage = new HttpMessage(socket);
         String[] statusLine = httpMessage.startLine.split(" ");

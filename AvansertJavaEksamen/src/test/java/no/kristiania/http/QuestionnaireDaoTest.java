@@ -2,6 +2,8 @@ package no.kristiania.http;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,7 +12,7 @@ class QuestionnaireDaoTest {
     QuestionnaireDao dao = new QuestionnaireDao(TestData.testDataSource());
 
     @Test
-    void shouldRetrieveSavedQuestion(){
+    void shouldRetrieveSavedQuestion() throws SQLException {
 
 
         Questionnaire questionnaire = exampleQuestionnaire();

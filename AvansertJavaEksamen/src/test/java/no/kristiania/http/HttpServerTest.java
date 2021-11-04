@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.Questionnaire;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -79,5 +80,18 @@ class HttpServerTest {
     }
 
 
+    @Test
+    void shouldCreateNewQuestion() throws IOException {
+        HttpPostClient postClient = new HttpPostClient(
+                "localhost",
+                server.getPort(),
+                "/api/questions",
+                "questionText=questionTest&questionTitle=titleTest",
+                "text/html"
+        );
+        assertEquals(200, postClient.getStatusCode());
+        Questionnaire qre = server.getQuestionnaire().get(0);
+        assertEquals("titleTest", qre.getQuestionTitle());
+    }
 
 }

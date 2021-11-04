@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.Questionnaire;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -12,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -20,7 +23,7 @@ public class HttpServer {
 
     static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
-    private List<String> roles = new ArrayList<>();
+    private ArrayList<Questionnaire> questionnaires = new ArrayList<>();
 
 
     public HttpServer(int serverPort) throws IOException {
@@ -158,8 +161,8 @@ public class HttpServer {
         return serverSocket.getLocalPort();
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
 
+    public List<Questionnaire> getQuestionnaire() {
+        return questionnaires;
+    }
 }

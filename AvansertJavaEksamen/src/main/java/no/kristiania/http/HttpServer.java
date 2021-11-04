@@ -74,6 +74,9 @@ public class HttpServer {
             qre.setQuestionTitle((queryMap.get("questionTitle")));
             this.questionnaires.add(qre);
 
+            qre.setQuestionText((queryMap.get("questionText")));
+            this.questionnaires.add(qre);
+
             writeOkResponse(clientSocket, responseText, "text/html");
         }
 

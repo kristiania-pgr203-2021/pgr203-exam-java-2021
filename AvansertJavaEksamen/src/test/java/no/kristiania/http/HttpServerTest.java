@@ -94,4 +94,19 @@ class HttpServerTest {
         assertEquals("titleTest", qre.getQuestionTitle());
     }
 
+    @Test
+    void shouldCreateNewQuestionWithDecoding() throws IOException {
+        HttpPostClient postClient = new HttpPostClient(
+                "localhost",
+                server.getPort(),
+                "/api/questions",
+                "questionText=hallå på deg?&questionTitle=titleTest",
+                "text/html"
+
+        );
+        assertEquals(200, postClient.getStatusCode());
+        Questionnaire qre = server.getQuestionnaire().get(0);
+        assertEquals("hallå på deg?", qre.getQuestionText());
+    }
+
 }

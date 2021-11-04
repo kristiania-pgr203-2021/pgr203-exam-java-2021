@@ -2,6 +2,7 @@ package no.kristiania.questionnaire;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.List;
 
 public class OptionToQnDao {
 
@@ -55,6 +56,7 @@ public class OptionToQnDao {
     }
 
 
-
-
+    public List<OptionToQn> listAll() {
+        return null;
+    }
 }

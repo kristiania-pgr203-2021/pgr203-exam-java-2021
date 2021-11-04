@@ -26,6 +26,18 @@ public class OptionToQnDaoTest {
         ;
     }
 
+    @Test
+    void shouldListAllOptions() throws SQLException {
+        OptionToQn optionQn = exampleOptionToQn();
+        dao.save(optionQn);
+
+        OptionToQn anotherOption = exampleOptionToQn();
+        dao.save(anotherOption);
+
+        assertThat(dao.listAll())
+                .extracting(OptionToQn::getId)
+                .contains(optionQn.getId(), anotherOption.getId());
+    }
 
     private OptionToQn exampleOptionToQn() {
         OptionToQn option = new OptionToQn();

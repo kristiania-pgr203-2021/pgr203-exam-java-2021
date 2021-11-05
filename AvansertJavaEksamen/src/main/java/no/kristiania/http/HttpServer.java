@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.*;
 
 public class HttpServer {
@@ -20,6 +21,8 @@ public class HttpServer {
 
     static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
+    private final HashMap<String, HttpController> controllers = new HashMap<>();
+
     private ArrayList<Questionnaire> questionnaires = new ArrayList<>();
 
 
@@ -36,13 +39,13 @@ public class HttpServer {
                 handleClient();
             }
 
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             logger.warn("invalid input or invalid output has occurred" + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void handleClient() throws IOException {
+    private void handleClient() throws IOException, SQLException {
         Socket clientSocket = serverSocket.accept();
 
         HttpMessage httpMessage = new HttpMessage(clientSocket);
@@ -59,6 +62,12 @@ public class HttpServer {
             fileTarget = requestTarget;
         }
 
+        if (controllers.containsKey(fileTarget)){
+            HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
+            response.write(clientSocket);
+            return;
+        }
+
         if (requestTarget.equals("/api/questions")){
 
             String responseText = null;
@@ -67,7 +76,7 @@ public class HttpServer {
             }
 
             Questionnaire qre = new Questionnaire();
-            Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
+            Map<String, String> queryMap = HttpMessage.parseRequestParameters(httpMessage.messageBody);
             qre.setQuestionTitle((queryMap.get("questionTitle")));
             this.questionnaires.add(qre);
 
@@ -128,17 +137,6 @@ public class HttpServer {
         }
     }
 
-    private Map<String, String> parseRequestParameters(String query) {
-        Map<String, String> queryMap = new HashMap<>();
-        for (String queryParameter : query.split("&")) {
-            int equalsPos = queryParameter.indexOf('=');
-            String parameterName = queryParameter.substring(0, equalsPos);
-            String parameterValue = queryParameter.substring(equalsPos+1);
-            queryMap.put(parameterName, parameterValue);
-        }
-        return queryMap;
-    }
-
     private void writeOkResponse(Socket clientSocket, String responseText, String contentType) throws IOException {
         String response = "HTTP/1.1 200 OK\r\n" +
                 "Content-Length: " + responseText.getBytes().length + "\r\n" +
@@ -178,5 +176,9 @@ public class HttpServer {
 
     public List<Questionnaire> getQuestionnaire() {
         return questionnaires;
+    }
+
+    public void addController(String path, HttpController controller) {
+        controllers.put(path, controller);
     }
 }

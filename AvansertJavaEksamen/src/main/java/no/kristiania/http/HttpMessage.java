@@ -19,6 +19,23 @@ public class HttpMessage {
         }
     }
 
+    public HttpMessage(String startLine, String messageBody){
+        this.startLine = startLine;
+        this.messageBody = messageBody;
+
+    }
+
+    public static Map<String, String> parseRequestParameters(String query) {
+        Map<String, String> queryMap = new HashMap<>();
+        for (String queryParameter : query.split("&")) {
+            int equalsPos = queryParameter.indexOf('=');
+            String parameterName = queryParameter.substring(0, equalsPos);
+            String parameterValue = queryParameter.substring(equalsPos+1);
+            queryMap.put(parameterName, parameterValue);
+        }
+        return queryMap;
+    }
+
     public int getContentLength() {
         return Integer.parseInt(getHeader("Content-Length"));
     }
@@ -56,4 +73,13 @@ public class HttpMessage {
         return buffer.toString();
     }
 
+    public void write(Socket socket) throws IOException {
+        String response = startLine + "\r\n" +
+                "Content-Length: " + messageBody.length() + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n" +
+                messageBody;
+        socket.getOutputStream().write(response.getBytes());
+
+    }
 }

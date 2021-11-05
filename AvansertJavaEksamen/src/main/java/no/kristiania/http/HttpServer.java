@@ -1,6 +1,5 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.Questionnaire;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -17,14 +16,9 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class HttpServer {
-
-
     static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
     private final HashMap<String, HttpController> controllers = new HashMap<>();
-
-    private ArrayList<Questionnaire> questionnaires = new ArrayList<>();
-
 
     public HttpServer(int serverPort) throws IOException {
 
@@ -67,32 +61,6 @@ public class HttpServer {
             response.write(clientSocket);
             return;
         }
-
-        if (requestTarget.equals("/api/questions")){
-
-            String responseText = null;
-            if (responseText == null){
-                responseText = "<h3>List is empty</h3>";
-            }
-
-            Questionnaire qre = new Questionnaire();
-            Map<String, String> queryMap = HttpMessage.parseRequestParameters(httpMessage.messageBody);
-            qre.setQuestionTitle((queryMap.get("questionTitle")));
-            this.questionnaires.add(qre);
-
-            qre.setQuestionText((queryMap.get("questionText")));
-            this.questionnaires.add(qre);
-
-
-            for (Questionnaire s:
-                 questionnaires) {
-                System.out.println(s.getQuestionTitle());
-            }
-
-            writeOkResponse(clientSocket, responseText, "text/html");
-        }
-
-
 
         if (requestTarget.equals("/hello")){
 
@@ -171,11 +139,6 @@ public class HttpServer {
 
     public int getPort() {
         return serverSocket.getLocalPort();
-    }
-
-
-    public List<Questionnaire> getQuestionnaire() {
-        return questionnaires;
     }
 
     public void addController(String path, HttpController controller) {

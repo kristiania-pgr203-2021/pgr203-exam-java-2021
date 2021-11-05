@@ -100,7 +100,9 @@ class HttpServerTest {
     }
 
     @Test
-    void shouldCreateNewQuestionWithDecoding() throws IOException {
+    void shouldCreateNewQuestionWithDecoding() throws IOException, SQLException {
+        QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
+        server.addController("/api/questions", new AddQuestionController(questionnaireDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -110,7 +112,7 @@ class HttpServerTest {
 
         );
         assertEquals(200, postClient.getStatusCode());
-        Questionnaire qre = server.getQuestionnaire().get(0);
+        Questionnaire qre = questionnaireDao.listAll().get(1);
         assertEquals("hallå på deg?", qre.getQuestionText());
     }
 

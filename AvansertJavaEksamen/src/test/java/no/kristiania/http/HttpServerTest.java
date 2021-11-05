@@ -1,11 +1,14 @@
 package no.kristiania.http;
 
 import no.kristiania.questionnaire.Questionnaire;
+import no.kristiania.questionnaire.QuestionnaireDao;
+import no.kristiania.questionnaire.TestData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -81,7 +84,9 @@ class HttpServerTest {
 
 
     @Test
-    void shouldCreateNewQuestion() throws IOException {
+    void shouldCreateNewQuestion() throws IOException, SQLException {
+        QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
+        server.addController("/api/questions", new AddQuestionController(questionnaireDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -90,7 +95,7 @@ class HttpServerTest {
                 "text/html"
         );
         assertEquals(200, postClient.getStatusCode());
-        Questionnaire qre = server.getQuestionnaire().get(0);
+        Questionnaire qre = questionnaireDao.listAll().get(0);
         assertEquals("titleTest", qre.getQuestionTitle());
     }
 

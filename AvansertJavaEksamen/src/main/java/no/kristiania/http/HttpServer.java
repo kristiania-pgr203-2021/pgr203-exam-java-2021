@@ -13,9 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class HttpServer {
@@ -69,16 +66,24 @@ public class HttpServer {
                 responseText = "<h3>List is empty</h3>";
             }
 
-            Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
             Questionnaire qre = new Questionnaire();
+            Map<String, String> queryMap = parseRequestParameters(httpMessage.messageBody);
             qre.setQuestionTitle((queryMap.get("questionTitle")));
             this.questionnaires.add(qre);
 
             qre.setQuestionText((queryMap.get("questionText")));
             this.questionnaires.add(qre);
 
+
+            for (Questionnaire s:
+                 questionnaires) {
+                System.out.println(s.getQuestionTitle());
+            }
+
             writeOkResponse(clientSocket, responseText, "text/html");
         }
+
+
 
         if (requestTarget.equals("/hello")){
 
@@ -147,6 +152,7 @@ public class HttpServer {
 
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = new HttpServer(8000);
+
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }
 

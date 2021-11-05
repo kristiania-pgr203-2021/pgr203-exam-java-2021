@@ -87,8 +87,8 @@ class HttpServerTest {
 
     @Test
     void shouldCreateNewQuestion() throws IOException, SQLException {
-        QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/newQuestions", new AddQuestionController(questionnaireDao));
+        QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
+        server.addController("/api/newQuestions", new AddQuestionController(qreDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -97,14 +97,17 @@ class HttpServerTest {
                 "text/html"
         );
         assertEquals(200, postClient.getStatusCode());
-        Questionnaire qre = questionnaireDao.listAll().get(0);
-        assertEquals("titleTest", qre.getQuestionTitle());
+        assertThat(qreDao.listAll())
+                .anySatisfy(q -> {
+                    assertThat(q.getQuestionTitle()).isEqualTo("titleTest");
+                    assertThat(q.getQuestionText()).isEqualTo("questionTest");
+                });
     }
 
     @Test
     void shouldCreateNewQuestionWithDecoding() throws IOException, SQLException {
-        QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/newQuestions", new AddQuestionController(questionnaireDao));
+        QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
+        server.addController("/api/newQuestions", new AddQuestionController(qreDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -114,8 +117,11 @@ class HttpServerTest {
 
         );
         assertEquals(200, postClient.getStatusCode());
-        Questionnaire qre = questionnaireDao.listAll().get(1);
-        assertEquals("hallå på deg?", qre.getQuestionText());
+        assertThat(qreDao.listAll())
+                .anySatisfy(q -> {
+                    assertThat(q.getQuestionTitle()).isEqualTo("titleTest");
+                    assertThat(q.getQuestionText()).isEqualTo("hallå på deg?");
+                });
     }
 
     @Test
@@ -128,9 +134,11 @@ class HttpServerTest {
         Questionnaire qre2 = QuestionnaireDaoTest.exampleQuestionnaire();
         qreDao.save(qre2);
 
+        server.addController("/api/questions", new ListQuestionsController(qreDao));
+
         HttpClient client = new HttpClient(
                 "localhost", server.getPort(),
-                "/api/newQuestions"
+                "/api/questions"
         );
 
         assertThat(client.getMessageBody())

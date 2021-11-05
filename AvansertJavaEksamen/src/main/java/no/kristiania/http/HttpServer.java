@@ -1,14 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.QuestionnaireDao;
-import org.flywaydb.core.Flyway;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -17,31 +9,26 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class HttpServer {
-    static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
     private final ServerSocket serverSocket;
     private final HashMap<String, HttpController> controllers = new HashMap<>();
 
     public HttpServer(int serverPort) throws IOException {
-
         serverSocket = new ServerSocket(serverPort);
 
-        new Thread(this::handleClients).start();
-    }
-
-    private void handleClients () {
-        try {
+        new Thread(() -> {
             while (true){
-                handleClient();
+                try(Socket clientSocket = serverSocket.accept()){
+                    handleClient(clientSocket);
+                }catch (IOException e){
+                    QuestionnaireServer.logger.warn("invalid input or invalid output has occurred" + e.getMessage());
+                }catch (SQLException e){
+                    QuestionnaireServer.logger.warn("Something went wrong with database" + e.getSQLState());
+                }
             }
-
-        } catch (IOException | SQLException e) {
-            logger.warn("invalid input or invalid output has occurred" + e.getMessage());
-            e.printStackTrace();
-        }
+        }).start();
     }
 
-    private void handleClient() throws IOException, SQLException {
-        Socket clientSocket = serverSocket.accept();
+    private void handleClient(Socket clientSocket) throws IOException, SQLException {
 
         HttpMessage httpMessage = new HttpMessage(clientSocket);
         String[] requestLine = httpMessage.startLine.split(" ");
@@ -126,31 +113,6 @@ public class HttpServer {
         clientSocket.getOutputStream().write(response.getBytes());
     }
 
-
-    public static void main(String[] args) throws IOException {
-        DataSource dataSource = createDataSource();
-
-        QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
-        HttpServer httpServer = new HttpServer(8000);
-        httpServer.addController("/api/newQuestions", new AddQuestionController(qreDao));
-
-        logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
-    }
-
-    private static DataSource createDataSource() throws IOException {
-
-        Properties prop = new Properties();
-        try (FileReader reader = new FileReader("AvansertJavaEksamen/pgr203.properties")) {
-            prop.load(reader);
-        }
-
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setURL(prop.getProperty("dataSource.url"));
-        dataSource.setUser(prop.getProperty("dataSource.username"));
-        dataSource.setPassword(prop.getProperty("dataSource.password"));
-        Flyway.configure().dataSource(dataSource).load().migrate();
-        return dataSource;
-    }
 
     public int getPort() {
         return serverSocket.getLocalPort();

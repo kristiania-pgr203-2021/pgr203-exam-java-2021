@@ -20,6 +20,7 @@ public class QuestionnaireServer {
         QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
         HttpServer httpServer = new HttpServer(8000);
         httpServer.addController("/api/newQuestions", new AddQuestionController(qreDao));
+        httpServer.addController("/api/questions", new ListQuestionsController(qreDao));
 
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }

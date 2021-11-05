@@ -14,13 +14,17 @@ public class ListQuestionsController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
-        String response = "";
+        String responseText = "";
 
         for (Questionnaire qre : qreDao.listAll()) {
-            response += "<div>" + qre.getQuestionTitle() + ", " + qre.getQuestionText() + "</div>";
+            responseText += "<div>" + qre.getQuestionTitle() + ", " + qre.getQuestionText() + "</div>";
+        }
+
+        if (responseText.isEmpty()){
+            responseText = "<h3>List is empty, add new question to initialize</h3>";
         }
 
 
-        return new HttpMessage("HTTP/1.1 200 Ok", response);
+        return new HttpMessage("HTTP/1.1 200 Ok", responseText);
     }
 }

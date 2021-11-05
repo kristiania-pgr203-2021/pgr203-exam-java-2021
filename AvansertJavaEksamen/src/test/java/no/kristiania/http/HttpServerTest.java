@@ -42,15 +42,6 @@ class HttpServerTest {
                 () -> assertEquals("Hello world", client.getMessageBody())
         );
     }
-    @Test
-    void shouldReturnContentType200() throws IOException {
-        HttpClient client = new HttpClient("localhost", server.getPort(), "/shouldReturnContent");
-        assertAll(
-                () -> assertEquals(200, client.getStatusCode()),
-                () -> assertEquals("text/html", client.getHeader("Content-Type")),
-                () -> assertEquals("<p>Hello world</p>", client.getMessageBody())
-        );
-    }
 
     @Test
     void shouldServeFiles() throws IOException {

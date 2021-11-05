@@ -50,27 +50,13 @@ public class HttpServer {
             HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
             response.write(clientSocket);
         }
-        else if (requestTarget.equals("/api/questions")){
 
-
-            String responseText = null;
-            if (responseText == null){
-                responseText = "<h3>List is empty";
-            }
-            writeOkResponse(clientSocket, responseText, "text/html");
-        }
-
-        if (requestTarget.equals("/hello")){
+        else if (requestTarget.equals("/hello")){
 
             String responseText = "Hello world";
             writeOkResponse(clientSocket, responseText, "text/html");
         }
 
-        else if (requestTarget.equals("/shouldReturnContent")){
-
-            String responseText = "<p>Hello world</p>";
-            writeOkResponse(clientSocket, responseText, "text/html");
-        }
         else {
 
             InputStream fileResource = getClass().getResourceAsStream(fileTarget);

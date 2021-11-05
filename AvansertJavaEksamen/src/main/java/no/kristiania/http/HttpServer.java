@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.*;
 
+import static no.kristiania.http.QuestionnaireServer.logger;
+
 public class HttpServer {
     private final ServerSocket serverSocket;
     private final HashMap<String, HttpController> controllers = new HashMap<>();
@@ -20,9 +22,9 @@ public class HttpServer {
                 try(Socket clientSocket = serverSocket.accept()){
                     handleClient(clientSocket);
                 }catch (IOException e){
-                    QuestionnaireServer.logger.warn("invalid input or invalid output has occurred" + e.getMessage());
+                    logger.warn("invalid input or invalid output has occurred" + e.getMessage());
                 }catch (SQLException e){
-                    QuestionnaireServer.logger.warn("Something went wrong with database" + e.getSQLState());
+                    logger.warn("Something went wrong with database" + e.getSQLState());
                 }
             }
         }).start();
@@ -47,10 +49,8 @@ public class HttpServer {
         if (controllers.containsKey(fileTarget)){
             HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
             response.write(clientSocket);
-            return;
         }
-
-        if (requestTarget.equals("/api/questions")){
+        else if (requestTarget.equals("/api/questions")){
 
 
             String responseText = null;

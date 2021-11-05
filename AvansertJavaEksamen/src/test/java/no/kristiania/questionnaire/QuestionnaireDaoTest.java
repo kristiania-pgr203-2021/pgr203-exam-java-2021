@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class QuestionnaireDaoTest {
+public class QuestionnaireDaoTest {
 
     QuestionnaireDao dao = new QuestionnaireDao(TestData.testDataSource());
 
@@ -58,7 +58,7 @@ class QuestionnaireDaoTest {
                 .contains(qre.getId(), anotherQre.getId());
     }
 
-    private Questionnaire exampleQuestionnaire() {
+    public static Questionnaire exampleQuestionnaire() {
         Questionnaire questionnaire = new Questionnaire();
         questionnaire.setQuestionTitle(pickOne("Food", "Car", "Customers", "Education", "Healthcare"));
         questionnaire.setQuestionText(pickOne("What do you like?", "Do you wish?", "What is you job role", "What is your favorite"));

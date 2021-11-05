@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
+import no.kristiania.questionnaire.QuestionnaireDaoTest;
 import no.kristiania.questionnaire.TestData;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +12,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.LocalTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HttpServerTest {
@@ -114,6 +116,27 @@ class HttpServerTest {
         assertEquals(200, postClient.getStatusCode());
         Questionnaire qre = questionnaireDao.listAll().get(1);
         assertEquals("hallå på deg?", qre.getQuestionText());
+    }
+
+    @Test
+    void shouldListQuestionsFromDatabase() throws SQLException, IOException {
+        QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
+
+        Questionnaire qre1 = QuestionnaireDaoTest.exampleQuestionnaire();
+        qreDao.save(qre1);
+
+        Questionnaire qre2 = QuestionnaireDaoTest.exampleQuestionnaire();
+        qreDao.save(qre2);
+
+        HttpClient client = new HttpClient(
+                "localhost", server.getPort(),
+                "/api/newQuestions"
+        );
+
+        assertThat(client.getMessageBody())
+                .contains(qre1.getQuestionTitle() + ", " + qre1.getQuestionText())
+                .contains(qre2.getQuestionTitle() + ", " + qre2.getQuestionText())
+                ;
     }
 
 }

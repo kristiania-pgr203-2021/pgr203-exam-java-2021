@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.QuestionnaireDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -62,6 +63,16 @@ public class HttpServer {
             return;
         }
 
+        if (requestTarget.equals("/api/questions")){
+
+
+            String responseText = null;
+            if (responseText == null){
+                responseText = "<h3>List is empty";
+            }
+            writeOkResponse(clientSocket, responseText, "text/html");
+        }
+
         if (requestTarget.equals("/hello")){
 
             String responseText = "Hello world";
@@ -117,7 +128,11 @@ public class HttpServer {
 
 
     public static void main(String[] args) throws IOException {
+        DataSource dataSource = createDataSource();
+
+        QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
         HttpServer httpServer = new HttpServer(8000);
+        httpServer.addController("/api/newQuestions", new AddQuestionController(qreDao));
 
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }
@@ -125,7 +140,7 @@ public class HttpServer {
     private static DataSource createDataSource() throws IOException {
 
         Properties prop = new Properties();
-        try (FileReader reader = new FileReader("pgr203.properties")) {
+        try (FileReader reader = new FileReader("AvansertJavaEksamen/pgr203.properties")) {
             prop.load(reader);
         }
 

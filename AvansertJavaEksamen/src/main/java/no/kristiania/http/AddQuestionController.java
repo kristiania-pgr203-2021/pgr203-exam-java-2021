@@ -18,8 +18,8 @@ public class AddQuestionController implements HttpController {
 
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
         Questionnaire qre = new Questionnaire();
-        qre.setQuestionTitle((queryMap.get("questionTitle")));
         qre.setQuestionText((queryMap.get("questionText")));
+        qre.setQuestionTitle((queryMap.get("questionTitle")));
         qreDao.save(qre);
 
         return new HttpMessage("Http/1.1 200 Ok", "it is done");

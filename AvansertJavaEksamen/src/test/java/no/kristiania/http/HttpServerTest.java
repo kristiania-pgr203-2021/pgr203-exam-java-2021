@@ -86,11 +86,11 @@ class HttpServerTest {
     @Test
     void shouldCreateNewQuestion() throws IOException, SQLException {
         QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/questions", new AddQuestionController(questionnaireDao));
+        server.addController("/api/newQuestions", new AddQuestionController(questionnaireDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
-                "/api/questions",
+                "/api/newQuestions",
                 "questionText=questionTest&questionTitle=titleTest",
                 "text/html"
         );
@@ -102,11 +102,11 @@ class HttpServerTest {
     @Test
     void shouldCreateNewQuestionWithDecoding() throws IOException, SQLException {
         QuestionnaireDao questionnaireDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/questions", new AddQuestionController(questionnaireDao));
+        server.addController("/api/newQuestions", new AddQuestionController(questionnaireDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
-                "/api/questions",
+                "/api/newQuestions",
                 "questionText=hallå på deg?&questionTitle=titleTest",
                 "text/html"
 

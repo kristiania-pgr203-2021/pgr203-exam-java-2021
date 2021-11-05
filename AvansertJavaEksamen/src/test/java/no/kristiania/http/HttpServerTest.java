@@ -1,9 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.Questionnaire;
-import no.kristiania.questionnaire.QuestionnaireDao;
-import no.kristiania.questionnaire.QuestionnaireDaoTest;
-import no.kristiania.questionnaire.TestData;
+import no.kristiania.questionnaire.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -136,6 +133,20 @@ class HttpServerTest {
                 .contains(qre1.getQuestionTitle() + ", " + qre1.getQuestionText())
                 .contains(qre2.getQuestionTitle() + ", " + qre2.getQuestionText())
                 ;
+    }
+
+    @Test
+    void shouldEchoQueryParameter() throws IOException {
+        OptionToQnDao optionDao = new OptionToQnDao(TestData.testDataSource());
+        server.addController("/api/alternativeAnswers", new AddOptionController(optionDao));
+
+
+        HttpClient client = new HttpClient(
+                "localhost",
+                server.getPort(),
+                "/api/alternativeAnswers?questions=TestText&option=Mat"
+        );
+        assertEquals("<p>Mat, TestText</p>", client.getMessageBody());
     }
 
 }

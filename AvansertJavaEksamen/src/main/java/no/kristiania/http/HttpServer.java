@@ -50,7 +50,6 @@ public class HttpServer {
             HttpMessage response = controllers.get(fileTarget).handle(httpMessage);
             response.write(clientSocket);
         }
-
         else if (requestTarget.equals("/hello")){
 
             String responseText = "Hello world";

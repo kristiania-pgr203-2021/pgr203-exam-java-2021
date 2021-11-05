@@ -24,7 +24,6 @@ public class ListQuestionsController implements HttpController {
             responseText = "<h3>List is empty, add new question to initialize</h3>";
         }
 
-
         return new HttpMessage("HTTP/1.1 200 Ok", responseText);
     }
 }

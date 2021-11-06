@@ -2,6 +2,7 @@ package no.kristiania.http;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,6 +78,7 @@ public class HttpMessage {
         String response = startLine + "\r\n" +
                 "Content-Length: " + messageBody.getBytes().length + "\r\n" +
                 "Connection: close\r\n" +
+                "Content-type: text/html; charset=UTF-8" + "\r\n" +
                 "\r\n" +
                 messageBody;
         socket.getOutputStream().write(response.getBytes());

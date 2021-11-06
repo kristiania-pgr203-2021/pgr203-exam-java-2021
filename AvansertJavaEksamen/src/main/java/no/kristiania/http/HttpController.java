@@ -1,7 +1,10 @@
 package no.kristiania.http;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
 public interface HttpController {
-    HttpMessage handle(HttpMessage request) throws SQLException;
+
+    String getPath();
+    HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException;
 }

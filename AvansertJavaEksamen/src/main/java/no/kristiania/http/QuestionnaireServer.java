@@ -1,5 +1,7 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.OptionToQn;
+import no.kristiania.questionnaire.OptionToQnDao;
 import no.kristiania.questionnaire.QuestionnaireDao;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -18,9 +20,13 @@ public class QuestionnaireServer {
         DataSource dataSource = createDataSource();
 
         QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
+        OptionToQnDao option = new OptionToQnDao(dataSource);
+
         HttpServer httpServer = new HttpServer(8000);
-        httpServer.addController("/api/newQuestions", new AddQuestionController(qreDao));
-        httpServer.addController("/api/questions", new ListQuestionsController(qreDao));
+        httpServer.addController(new AddQuestionController(qreDao));
+        httpServer.addController(new ListQuestionsController(qreDao));
+        httpServer.addController(new AddOptionController(option));
+        httpServer.addController(new RoleOptionsController(qreDao));
 
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }

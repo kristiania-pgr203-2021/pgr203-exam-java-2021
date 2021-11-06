@@ -5,11 +5,18 @@ import no.kristiania.questionnaire.OptionToQnDao;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static no.kristiania.http.QuestionnaireServer.logger;
+
 public class AddOptionController implements HttpController {
     private final OptionToQnDao optionDao;
 
     public AddOptionController(OptionToQnDao optionDao) {
         this.optionDao = optionDao;
+    }
+
+    @Override
+    public String getPath() {
+        return "/api/alternativeAnswers";
     }
 
     @Override
@@ -19,14 +26,30 @@ public class AddOptionController implements HttpController {
 
         int questionPos = requestTarget.indexOf('?');
         String query = requestTarget.substring(questionPos+1);
+        String requestGet = request.startLine.split(" ")[0];
 
-        String option = "";
-        if (query != null) {
-            Map<String, String> queryMap = HttpMessage.parseRequestParameters(query);
-            option = queryMap.get("option") + ", " + queryMap.get("questions");
+        if (requestGet.equals("GET")){
+            String option = "";
+            if (query != null) {
+                String decodeQuery = AddQuestionController.decodeValue(query);
+                Map<String, String> queryMap = HttpMessage.parseRequestParameters(decodeQuery);
+                logger.info("query decoding: {}", decodeQuery);
+
+                //slett denne etterpå
+                String questionOption = AddQuestionController.decodeValue(queryMap.get("option"));
+                logger.info("option: {}: have been added", questionOption);
+
+                option = (queryMap.get("option")) + ", " + (queryMap.get("questions"));
+            }
+
+            String responseText = "<p>" + option + "</p>";
+            new HttpMessage("HTTP/1.1 200 Ok", responseText);
         }
-        String responseText = "<p>" + option + "</p>";
+
+        String responseText = "<div>Option to question have been added. <br><a href=/index.html>Return to front page</a><br>" +
+                                "Or <a href=/newQuestionnaire.html>Add new question</a></div>";
 
         return new HttpMessage("HTTP/1.1 200 Ok", responseText);
+
     }
 }

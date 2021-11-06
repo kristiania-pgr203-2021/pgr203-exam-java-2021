@@ -76,7 +76,7 @@ class HttpServerTest {
     @Test
     void shouldCreateNewQuestion() throws IOException, SQLException {
         QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/newQuestions", new AddQuestionController(qreDao));
+        server.addController(new AddQuestionController(qreDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -95,7 +95,7 @@ class HttpServerTest {
     @Test
     void shouldCreateNewQuestionWithDecoding() throws IOException, SQLException {
         QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
-        server.addController("/api/newQuestions", new AddQuestionController(qreDao));
+        server.addController(new AddQuestionController(qreDao));
         HttpPostClient postClient = new HttpPostClient(
                 "localhost",
                 server.getPort(),
@@ -122,7 +122,7 @@ class HttpServerTest {
         Questionnaire qre2 = QuestionnaireDaoTest.exampleQuestionnaire();
         qreDao.save(qre2);
 
-        server.addController("/api/questions", new ListQuestionsController(qreDao));
+        server.addController(new ListQuestionsController(qreDao));
 
         HttpClient client = new HttpClient(
                 "localhost", server.getPort(),
@@ -138,7 +138,7 @@ class HttpServerTest {
     @Test
     void shouldEchoQueryParameter() throws IOException {
         OptionToQnDao optionDao = new OptionToQnDao(TestData.testDataSource());
-        server.addController("/api/alternativeAnswers", new AddOptionController(optionDao));
+        server.addController(new AddOptionController(optionDao));
 
 
         HttpClient client = new HttpClient(
@@ -147,6 +147,20 @@ class HttpServerTest {
                 "/api/alternativeAnswers?questions=TestText&option=Mat"
         );
         assertEquals("<p>Mat, TestText</p>", client.getMessageBody());
+    }
+
+    @Test
+    void shouldReturnRolesFromServer() throws IOException, SQLException {
+        QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
+        qreDao.save();
+        server.addController(new RoleOptionsController(qreDao));
+
+        HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questionOptions");
+
+        assertEquals(
+                "<option value=1>Dog</option><option value=2>Cat</option>",
+                client.getMessageBody()
+        );
     }
 
 }

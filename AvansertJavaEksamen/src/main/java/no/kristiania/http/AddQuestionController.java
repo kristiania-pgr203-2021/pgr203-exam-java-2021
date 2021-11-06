@@ -18,6 +18,11 @@ public class AddQuestionController implements HttpController {
     }
 
     @Override
+    public String getPath() {
+        return "/api/newQuestions";
+    }
+
+    @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
 
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
@@ -27,13 +32,14 @@ public class AddQuestionController implements HttpController {
         String questionText = decodeValue(queryMap.get("questionText"));
         qre.setQuestionText(questionText);
 
+
         qreDao.save(qre);
         logger.info("Title: {} and Text: {} have been added", qre.getQuestionTitle(), qre.getQuestionText());
 
-        String response = "<div>Question have been added successfully on database. <br><a href=/index.html>Return to front page</a><br>" +
+        String responseText = "<div>Question have been added successfully on database. <br><a href=/index.html>Return to front page</a><br>" +
                 "Or <a href=/addOption.html>Add Option to question</a></div>";
 
-        return new HttpMessage("Http/1.1 200 Ok", response);
+        return new HttpMessage("Http/1.1 200 Ok", responseText);
     }
 
     public static String decodeValue(String responseText) {

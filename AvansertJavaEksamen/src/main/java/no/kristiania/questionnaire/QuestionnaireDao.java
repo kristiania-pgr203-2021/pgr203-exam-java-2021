@@ -69,6 +69,23 @@ public class QuestionnaireDao {
         }
     }
 
+    public List<String> listAllByTitle() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select * from questions"
+            )) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<String> result = new ArrayList<>();
+
+                    while (rs.next()) {
+                        result.add(rs.getString("question_title"));
+                    }
+                    return result;
+                }
+            }
+        }
+    }
+
     public List<Questionnaire> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(

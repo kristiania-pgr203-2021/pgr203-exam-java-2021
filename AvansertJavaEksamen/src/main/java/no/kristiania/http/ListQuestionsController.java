@@ -13,6 +13,11 @@ public class ListQuestionsController implements HttpController {
     }
 
     @Override
+    public String getPath() {
+        return "/api/questions";
+    }
+
+    @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
         String responseText = "";
 

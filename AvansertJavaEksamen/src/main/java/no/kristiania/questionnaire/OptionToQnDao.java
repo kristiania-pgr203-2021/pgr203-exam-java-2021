@@ -17,10 +17,11 @@ public class OptionToQnDao {
 
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "insert into option_to_qn (option_value) values (?)",
+                    "insert into option_to_qn (option_value, question_fk) values (?, ?)",
                     Statement.RETURN_GENERATED_KEYS
             )) {
                 statement.setString(1, optionToQn.getOption());
+                statement.setLong(2, optionToQn.getQuestion_fk());
 
                 statement.executeUpdate();
 
@@ -53,6 +54,7 @@ public class OptionToQnDao {
         OptionToQn option = new OptionToQn();
         option.setId(rs.getLong("id"));
         option.setOption(rs.getString("option_value"));
+        option.setQuestion_fk(rs.getLong("question_fk"));
         return option;
     }
 

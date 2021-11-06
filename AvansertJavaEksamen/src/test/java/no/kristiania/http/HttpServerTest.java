@@ -150,17 +150,15 @@ class HttpServerTest {
     }
 
     @Test
-    void shouldReturnRolesFromServer() throws IOException, SQLException {
+    void shouldReturnRoles() throws IOException, SQLException {
         QuestionnaireDao qreDao = new QuestionnaireDao(TestData.testDataSource());
-        qreDao.save();
+
         server.addController(new RoleOptionsController(qreDao));
 
         HttpClient client = new HttpClient("localhost", server.getPort(), "/api/questionOptions");
 
-        assertEquals(
-                "<option value=1>Dog</option><option value=2>Cat</option>",
-                client.getMessageBody()
-        );
+        assertThat(client.getMessageBody())
+                .contains(qreDao.listAllByTitle());
     }
 
 }

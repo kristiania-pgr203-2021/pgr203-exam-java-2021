@@ -80,6 +80,5 @@ public class HttpMessage {
                 "\r\n" +
                 messageBody;
         socket.getOutputStream().write(response.getBytes());
-
     }
 }

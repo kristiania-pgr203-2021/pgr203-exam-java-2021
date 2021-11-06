@@ -1,5 +1,6 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
 
 import java.sql.SQLException;
@@ -35,14 +36,17 @@ public class AddOptionController implements HttpController {
                 Map<String, String> queryMap = HttpMessage.parseRequestParameters(decodeQuery);
                 logger.info("query decoding: {}", decodeQuery);
 
-                //slett denne etterpå
-                String questionOption = AddQuestionController.decodeValue(queryMap.get("option"));
-                logger.info("option: {}: have been added", questionOption);
+                OptionToQn optionToQn = new OptionToQn();
+                optionToQn.setOption(queryMap.get("option"));
+                optionToQn.setQuestion_fk(Long.parseLong(queryMap.get("questions")));
+                optionDao.save(optionToQn);
+                logger.info("option: {}: and id: {} have been added", queryMap.get("option"), queryMap.get("questions"));
 
                 option = (queryMap.get("option")) + ", " + (queryMap.get("questions"));
             }
 
             String responseText = "<p>" + option + "</p>";
+
             new HttpMessage("HTTP/1.1 200 Ok", responseText);
         }
 

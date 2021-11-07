@@ -52,34 +52,38 @@ public class HttpServer {
         }
         else {
 
-            InputStream fileResource = getClass().getResourceAsStream(fileTarget);
+            defualt(clientSocket, requestTarget, fileTarget);
+        }
+    }
 
-            if (fileResource != null) {
-                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-                fileResource.transferTo(buffer);
-                String responseText = buffer.toString();
+    private void defualt(Socket clientSocket, String requestTarget, String fileTarget) throws IOException {
+        InputStream fileResource = getClass().getResourceAsStream(fileTarget);
 
-                String contentType = "text/plain";
-                if (requestTarget.endsWith(".html")){
-                    contentType = "text/html";
-                }
-                else if (requestTarget.endsWith(".css")){
-                    contentType = "text/css";
-                }
+        if (fileResource != null) {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+            fileResource.transferTo(buffer);
+            String responseText = buffer.toString();
 
-                writeOkResponse(clientSocket, responseText, contentType);
-                return;
+            String contentType = "text/plain";
+            if (requestTarget.endsWith(".html")){
+                contentType = "text/html";
+            }
+            else if (requestTarget.endsWith(".css")){
+                contentType = "text/css";
             }
 
-            String responseText = "File not found: " + requestTarget;
-
-            String response = "HTTP/1.1 404 Not found\r\n" +
-                    "Content-Length: " + responseText.length() + "\r\n" +
-                    "Connection: close\r\n" +
-                    "\r\n" +
-                    responseText;
-            clientSocket.getOutputStream().write(response.getBytes());
+            writeOkResponse(clientSocket, responseText, contentType);
+            return;
         }
+
+        String responseText = "File not found: " + requestTarget;
+
+        String response = "HTTP/1.1 404 Not found\r\n" +
+                "Content-Length: " + responseText.length() + "\r\n" +
+                "Connection: close\r\n" +
+                "\r\n" +
+                responseText;
+        clientSocket.getOutputStream().write(response.getBytes());
     }
 
     private void writeOkResponse(Socket clientSocket, String responseText, String contentType) throws IOException {

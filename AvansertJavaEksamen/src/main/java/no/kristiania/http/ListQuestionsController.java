@@ -22,11 +22,19 @@ public class ListQuestionsController implements HttpController {
         String responseText = "";
 
         for (Questionnaire qre : qreDao.listAll()) {
-            responseText += "<div>" + qre.getQuestionTitle() + ", " + qre.getQuestionText() + "</div>";
+            responseText += "<div>Question title: "+ qre.getQuestionTitle() +
+                    " Question Text: " + qre.getQuestionText() +
+                    "</div>";
+
+            for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
+                if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())){
+                    responseText += "<div>" + " Question option: " + qre2.getOptionForQuestion() +"</div>";
+                }
+            }
         }
 
         if (responseText.isEmpty()){
-            responseText = "<h3>List is empty, add new question to initialize</h3>";
+            responseText = "<h3>List is empty, add new question</h3>";
         }
 
         return new HttpMessage("HTTP/1.1 200 Ok", responseText);

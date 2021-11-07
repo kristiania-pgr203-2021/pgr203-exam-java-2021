@@ -1,5 +1,7 @@
 package no.kristiania.questionnaire;
 
+import no.kristiania.http.HttpMessage;
+
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
@@ -98,6 +100,26 @@ public class QuestionnaireDao {
                         questionnaires.add(mapFromResultSet(rs));
                     }
                     return questionnaires;
+                }
+            }
+        }
+    }
+
+    public List<Questionnaire> listAllQuestionAndOptions() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM questions join option_to_qn on questions.id = question_fk"
+            )) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    List<Questionnaire> result = new ArrayList<>();
+                    while (rs.next()){
+                        Questionnaire qre = new Questionnaire();
+                        qre.setQuestionText(rs.getString("question_text"));
+                        qre.setOptionForQuestion(rs.getString("option_value"));
+                        qre.setQuestionTitle(rs.getString("question_title"));
+                        result.add(qre);
+                    }
+                    return result;
                 }
             }
         }

@@ -22,7 +22,7 @@ public class RoleOptionsController implements HttpController {
 
         String responseText = "";
 
-        int value = 0;
+        int value = 1;
         for (String qre : qreDao.listAllByTitle()) {
             responseText += "<option value=" + (value++) + ">" + qre + "</option><br>";
         }

@@ -58,7 +58,6 @@ public class OptionToQnDao {
         return option;
     }
 
-
     public List<OptionToQn> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(

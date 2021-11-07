@@ -31,17 +31,11 @@ public class QuestionnaireDaoTest {
         matchingTitle.setQuestionTitle("TestTitle");
         dao.save(matchingTitle);
 
-        Questionnaire anotherMatchingTitle = exampleQuestionnaire();
-        anotherMatchingTitle.setQuestionTitle(matchingTitle.getQuestionTitle());
-        dao.save(anotherMatchingTitle);
-
         Questionnaire nonMatchingTitle = exampleQuestionnaire();
         dao.save(nonMatchingTitle);
 
-        assertThat(dao.listByTitle(matchingTitle.getQuestionTitle()))
-                .extracting(Questionnaire::getId)
-                .contains(matchingTitle.getId(), anotherMatchingTitle.getId())
-                .doesNotContain(nonMatchingTitle.getId());
+        assertThat(dao.listAll().contains(matchingTitle.getQuestionTitle()));
+        assertThat(!dao.listAll().contains(nonMatchingTitle.getQuestionTitle()));
 
     }
 

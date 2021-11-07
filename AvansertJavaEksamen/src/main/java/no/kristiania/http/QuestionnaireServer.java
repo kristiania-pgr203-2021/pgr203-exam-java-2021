@@ -37,7 +37,6 @@ public class QuestionnaireServer {
         try (FileReader reader = new FileReader("AvansertJavaEksamen/pgr203.properties")) {
             prop.load(reader);
         }
-
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         dataSource.setURL(prop.getProperty("dataSource.url"));
         dataSource.setUser(prop.getProperty("dataSource.username"));

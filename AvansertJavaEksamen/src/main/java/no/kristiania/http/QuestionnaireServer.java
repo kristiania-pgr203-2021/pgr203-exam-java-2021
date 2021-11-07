@@ -26,6 +26,7 @@ public class QuestionnaireServer {
         httpServer.addController(new ListQuestionsController(qreDao));
         httpServer.addController(new AddOptionController(option));
         httpServer.addController(new RoleOptionsController(qreDao));
+        httpServer.addController(new EchoQueryController());
 
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }

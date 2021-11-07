@@ -34,10 +34,13 @@ class HttpServerTest {
 
     @Test
     void shouldRespondWith200ForKnownRequestTarget() throws IOException {
+
+        server.addController(new EchoQueryController());
+
         HttpClient client = new HttpClient("localhost", server.getPort(), "/hello");
         assertAll(
                 () -> assertEquals(200, client.getStatusCode()),
-                () -> assertEquals("Hello world", client.getMessageBody())
+                () -> assertEquals("<p>Hello world</p>", client.getMessageBody())
         );
     }
 
@@ -67,6 +70,9 @@ class HttpServerTest {
 
     @Test
     void shouldHandleMoreThanOneRequest() throws IOException {
+
+        server.addController(new EchoQueryController());
+
         assertEquals(200, new HttpClient("localhost", server.getPort(), "/hello")
                 .getStatusCode());
         assertEquals(200, new HttpClient("localhost", server.getPort(), "/hello")

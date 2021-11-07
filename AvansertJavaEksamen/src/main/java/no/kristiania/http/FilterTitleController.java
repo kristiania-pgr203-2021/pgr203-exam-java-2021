@@ -6,6 +6,7 @@ import no.kristiania.questionnaire.QuestionnaireDao;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FilterTitleController implements HttpController {
     private final QuestionnaireDao qreDao;
@@ -26,7 +27,7 @@ public class FilterTitleController implements HttpController {
         String responseText = "";
 
         int value = 1;
-        for (String qre : qreDao.listAllByTitle()) {
+        for (String qre : qreDao.listAllByTitle().stream().distinct().collect(Collectors.toList())) {
             responseText += "<option value=" + (value++) + ">" + qre + "</option><br>";
         }
         return new HttpMessage("HTTP/1.1 200 OK", responseText);

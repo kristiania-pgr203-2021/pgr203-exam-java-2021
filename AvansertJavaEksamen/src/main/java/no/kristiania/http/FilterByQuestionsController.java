@@ -4,6 +4,7 @@ import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
 
 import java.sql.SQLException;
+import java.util.stream.Collectors;
 
 
 public class FilterByQuestionsController implements HttpController {
@@ -24,8 +25,8 @@ public class FilterByQuestionsController implements HttpController {
         String responseText = "";
 
         int value = 1;
-        for (Questionnaire qre : qreDao.listAll()) {
-            responseText += "<option value=" + (value++) + ">" + qre.getQuestionText() + "</option><br>";
+        for (String qre : qreDao.listAllByTextOption().stream().distinct().collect(Collectors.toList())) {
+            responseText += "<option value=" + (value++) + ">" + qre + "</option><br>";
         }
         return new HttpMessage("HTTP/1.1 200 OK", responseText);
     }

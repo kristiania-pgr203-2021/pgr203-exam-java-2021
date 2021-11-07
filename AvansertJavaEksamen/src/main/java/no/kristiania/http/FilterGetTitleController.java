@@ -32,9 +32,21 @@ public class FilterGetTitleController implements HttpController {
             if (query != null) {
                 Map<String, String> queryMap = HttpMessage.parseRequestParameters(query);
 
-                Questionnaire qre = new Questionnaire();
                 String title = queryMap.get("title-name");
-                System.out.println(title);
+                String response = "";
+                for (Questionnaire qre:
+                        qreDao.listAllByTitleID(Long.valueOf(title))) {
+                    System.out.println("lista; " + qre);
+
+                    for (Questionnaire qreList:
+                            qreDao.listByTitle(qre.getQuestionTitle())) {
+                                 response += "<div><h4>Title: "+qreList.getQuestionTitle() +
+                                "Text: " + qreList.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
+                                + "</h4></div>";
+                        System.out.println(qreList.getQuestionTitle());
+                        System.out.println(response);
+                    }
+                }
             }
         }
 

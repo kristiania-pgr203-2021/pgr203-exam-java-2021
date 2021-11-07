@@ -22,13 +22,15 @@ public class ListQuestionsController implements HttpController {
         String responseText = "";
 
         for (Questionnaire qre : qreDao.listAll()) {
-            responseText += "<div>Question title: "+ qre.getQuestionTitle() +
-                    " Question Text: " + qre.getQuestionText() +
+            responseText += "<div>Title: "+ qre.getQuestionTitle() +
+                    " & Text: " + qre.getQuestionText() +
                     "</div>";
 
             for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
                 if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())){
-                    responseText += "<div>" + " Question option: " + qre2.getOptionForQuestion() +"</div>";
+                    responseText += "<ul style=list-style-type:square>" +
+                                    "<li>" + " Option: " + qre2.getOptionForQuestion() + "</li>" +
+                                    "</ul>";
                 }
             }
         }

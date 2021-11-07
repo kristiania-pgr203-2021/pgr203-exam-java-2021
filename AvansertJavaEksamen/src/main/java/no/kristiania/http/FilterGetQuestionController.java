@@ -36,9 +36,6 @@ public class FilterGetQuestionController implements HttpController {
 
                 for (Questionnaire qre:
                         qreDao.listAllByTitleID(Long.valueOf(queryMap.get("question-name")))) {
-                    response += "<div><h4> Title: "+qre.getQuestionTitle() +
-                            " Text: " + qre.getQuestionText() + " Option: " + "</h4></div><br>";
-
                     for (Questionnaire qreList:
                         qreDao.listByText(qre.getQuestionText())) {
                         response += "<div><h4> Title: "+qre.getQuestionTitle() +
@@ -49,9 +46,8 @@ public class FilterGetQuestionController implements HttpController {
             }
         }
 
-        String responseText = "<div><h3>List of question have been sorted: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
+        String responseText = "<div><h3>Filtering list of all samme text:: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
 
         return new HttpMessage("HTTP/1.1 200 OK", responseText);
-
     }
 }

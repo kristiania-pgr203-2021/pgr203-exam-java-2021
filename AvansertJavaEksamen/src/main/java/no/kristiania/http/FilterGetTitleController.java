@@ -28,20 +28,17 @@ public class FilterGetTitleController implements HttpController {
         String query = requestTarget.substring(questionPos+1);
         String requestGet = request.startLine.split(" ")[0];
 
+        String response = "";
         if (requestGet.equals("GET")){
             if (query != null) {
                 Map<String, String> queryMap = HttpMessage.parseRequestParameters(query);
 
-                String title = queryMap.get("title-name");
-                String response = "";
                 for (Questionnaire qre:
-                        qreDao.listAllByTitleID(Long.valueOf(title))) {
-                    System.out.println("lista; " + qre);
-
+                        qreDao.listAllByTitleID(Long.valueOf(queryMap.get("title-name")))) {
                     for (Questionnaire qreList:
                             qreDao.listByTitle(qre.getQuestionTitle())) {
-                                 response += "<div><h4>Title: "+qreList.getQuestionTitle() +
-                                "Text: " + qreList.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
+                                 response += "<div><h4>Title: "+qre.getQuestionTitle() +
+                                "Text: " + qre.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
                                 + "</h4></div>";
                         System.out.println(qreList.getQuestionTitle());
                         System.out.println(response);
@@ -50,7 +47,7 @@ public class FilterGetTitleController implements HttpController {
             }
         }
 
-        String responseText = "<div>List of title have been sorted: "+"<h3>" + "<h3>" + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
+        String responseText = "<div><h3>Filtering list of all samme title: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
 
         return new HttpMessage("HTTP/1.1 200 OK", responseText);
 

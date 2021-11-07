@@ -1,7 +1,5 @@
 package no.kristiania.questionnaire;
 
-import no.kristiania.http.HttpMessage;
-
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;

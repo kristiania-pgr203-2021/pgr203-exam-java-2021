@@ -31,7 +31,6 @@ public class ListQuestionsController implements HttpController {
                     responseText += "<ul style=list-style-type:square>" +
                                     "<li>" + " Option: " + qre2.getOptionForQuestion() + "</li>" +
                                     "</ul>";
-
                 }
             }
         }

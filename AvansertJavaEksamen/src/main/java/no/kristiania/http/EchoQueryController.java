@@ -1,7 +1,5 @@
 package no.kristiania.http;
 
-import java.io.UnsupportedEncodingException;
-import java.sql.SQLException;
 import java.util.Map;
 
 public class EchoQueryController implements HttpController {

@@ -9,15 +9,16 @@
 
 <h2>List of all questionnaire:</h2>
 
-<form>
+<form action="/api/catchQuryTitle" method="get">
     <label>Filter by Title:<select name="title-name" id="title-id"></select></label>
     <button>Click to filter</button>
 </form>
-
-<form>
+<form action="/api/catchQuryQuestion" method="get">
     <label>Filter by question:<select name="question-name" id="question-id"></select></label>
     <button>Click to filter</button>
 </form>
+
+<div id="questionnaire"></div>
 
 <div>
     <a href="index.html">Return to front page</a>
@@ -25,13 +26,24 @@
 </body>
 
 <script>
-    fetch("/api/titleOptions").then(response => response.text()).then(html => {
-        document.getElementById("title-id").innerHTML += html;
-    });
 
-    fetch("/api/questionNameOptions").then(response => response.text()).then(html => {
-        document.getElementById("question-id").innerHTML += html;
-    });
+    fetch("/api/titleOptions").then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("title-id").innerHTML += text;
+    })
+
+    fetch("/api/questionNameOptions").then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("question-id").innerHTML += text;
+    })
+
+    fetch("/api/questionnaire" + location.search).then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("questionnaire").innerHTML = text;
+    })
 
 </script>
 

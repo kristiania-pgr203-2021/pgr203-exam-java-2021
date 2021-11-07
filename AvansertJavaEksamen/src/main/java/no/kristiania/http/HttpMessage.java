@@ -11,6 +11,7 @@ public class HttpMessage {
     public final Map<String, String> headerFields = new HashMap<>();
     public String messageBody;
 
+
     public HttpMessage(Socket socket) throws IOException {
         startLine = HttpMessage.readLine(socket);
         readHeaders(socket);
@@ -22,6 +23,10 @@ public class HttpMessage {
     public HttpMessage(String startLine, String messageBody){
         this.startLine = startLine;
         this.messageBody = messageBody;
+    }
+
+    public HttpMessage(String startLine){
+        this.startLine = startLine;
     }
 
     public static Map<String, String> parseRequestParameters(String query) {

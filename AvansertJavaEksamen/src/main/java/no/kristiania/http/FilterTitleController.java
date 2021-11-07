@@ -1,10 +1,11 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.OptionToQnDao;
+import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
+import java.util.Map;
 
 public class FilterTitleController implements HttpController {
     private final QuestionnaireDao qreDao;
@@ -21,6 +22,7 @@ public class FilterTitleController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
+
         String responseText = "";
 
         int value = 1;

@@ -44,7 +44,7 @@ public class AddOptionController implements HttpController {
 
                 for (OptionToQn OpToQn : optionDao.listAll()) {
                     responseText = "<div>Option to question have been added: "+"<h3>" + OpToQn.getOption() + "<h3>" + "<br><a href=/index.html>Return to front page</a>" +
-                            " Or <a href=/newQuestionnaire.html>Add new question</a></div>";;
+                            " Or <a href=/newQuestionnaire.html>Add new question</a></div>";
                 }
             }
         }

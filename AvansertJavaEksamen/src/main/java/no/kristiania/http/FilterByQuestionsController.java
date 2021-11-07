@@ -3,13 +3,13 @@ package no.kristiania.http;
 import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
-public class FilterByQuestions implements HttpController {
+
+public class FilterByQuestionsController implements HttpController {
     private final QuestionnaireDao qreDao;
 
-    public FilterByQuestions(QuestionnaireDao qreDao) {
+    public FilterByQuestionsController(QuestionnaireDao qreDao) {
         this.qreDao = qreDao;
     }
 
@@ -19,7 +19,8 @@ public class FilterByQuestions implements HttpController {
     }
 
     @Override
-    public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
+    public HttpMessage handle(HttpMessage request) throws SQLException {
+
         String responseText = "";
 
         int value = 1;

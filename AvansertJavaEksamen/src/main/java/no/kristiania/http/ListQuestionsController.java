@@ -20,7 +20,7 @@ public class ListQuestionsController implements HttpController {
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
         String responseText = "";
-
+        String errorResponseText = "";
         for (Questionnaire qre : qreDao.listAll()) {
             responseText += "<div>Title: "+ qre.getQuestionTitle() +
                     " & Text: " + qre.getQuestionText() +
@@ -31,6 +31,7 @@ public class ListQuestionsController implements HttpController {
                     responseText += "<ul style=list-style-type:square>" +
                                     "<li>" + " Option: " + qre2.getOptionForQuestion() + "</li>" +
                                     "</ul>";
+
                 }
             }
         }
@@ -38,7 +39,7 @@ public class ListQuestionsController implements HttpController {
         if (responseText.isEmpty()){
             responseText = "<h3>List is empty, add new question</h3>";
         }
-
         return new HttpMessage("HTTP/1.1 200 Ok", responseText);
     }
+
 }

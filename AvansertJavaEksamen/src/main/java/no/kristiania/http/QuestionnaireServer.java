@@ -1,6 +1,5 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
 import no.kristiania.questionnaire.QuestionnaireDao;
 import org.flywaydb.core.Flyway;

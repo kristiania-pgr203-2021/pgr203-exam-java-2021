@@ -22,7 +22,6 @@ public class HttpMessage {
     public HttpMessage(String startLine, String messageBody){
         this.startLine = startLine;
         this.messageBody = messageBody;
-
     }
 
     public static Map<String, String> parseRequestParameters(String query) {

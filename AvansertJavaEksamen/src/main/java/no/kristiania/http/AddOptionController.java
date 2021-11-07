@@ -2,9 +2,7 @@ package no.kristiania.http;
 
 import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
-import no.kristiania.questionnaire.Questionnaire;
 
-import java.net.Socket;
 import java.sql.SQLException;
 import java.util.Map;
 

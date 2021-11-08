@@ -40,8 +40,6 @@ public class FilterGetTitleController implements HttpController {
                                  response += "<div><h4>Title: "+qre.getQuestionTitle() +
                                 "Text: " + qre.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
                                 + "</h4></div>";
-                        System.out.println(qreList.getQuestionTitle());
-                        System.out.println(response);
                     }
                 }
             }

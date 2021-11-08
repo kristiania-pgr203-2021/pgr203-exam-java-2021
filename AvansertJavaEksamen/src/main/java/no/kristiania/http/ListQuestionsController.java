@@ -20,7 +20,6 @@ public class ListQuestionsController implements HttpController {
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
         String responseText = "";
-        String errorResponseText = "";
         for (Questionnaire qre : qreDao.listAll()) {
             responseText += "<div>Title: "+ qre.getQuestionTitle() +
                     " & Text: " + qre.getQuestionText() +

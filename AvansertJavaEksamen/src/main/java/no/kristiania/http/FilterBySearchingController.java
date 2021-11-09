@@ -7,16 +7,16 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class FilterGetQuestionController implements HttpController {
+public class FilterBySearchingController implements HttpController {
     private final QuestionnaireDao qreDao;
 
-    public FilterGetQuestionController(QuestionnaireDao qreDao) {
+    public FilterBySearchingController(QuestionnaireDao qreDao) {
         this.qreDao = qreDao;
     }
 
     @Override
     public String getPath() {
-        return "/api/catchQuryQuestion";
+        return "/api/searchOption";
     }
 
     @Override
@@ -28,11 +28,11 @@ public class FilterGetQuestionController implements HttpController {
         String responseText = "";
             for (Questionnaire qre :
                     qreDao.search(questionText)) {
-                responseText += "<div>Title: " + qre.getQuestionTitle() +
+                responseText = "<div>Title: " + qre.getQuestionTitle() +
                         " & Text: " + qre.getQuestionText() +
                         "</div>";
                 for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
-                    if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())) {
+                    if (qre2.getQuestionText().equals(qre.getQuestionText())) {
                         if (qre2.getOptionForQuestion() == null) {
                             responseText += "";
                         }else {

@@ -7,10 +7,10 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Map;
 
-public class FilterGetTitleController implements HttpController {
+public class FilterByTitleController implements HttpController {
     private final QuestionnaireDao qreDao;
 
-    public FilterGetTitleController(QuestionnaireDao qreDao) {
+    public FilterByTitleController(QuestionnaireDao qreDao) {
         this.qreDao = qreDao;
     }
 
@@ -52,6 +52,8 @@ public class FilterGetTitleController implements HttpController {
                 }
             }
         }
-        return new HttpMessage("HTTP/1.1 200 OK", responseText + "<br><a href=/questionnaireFilter.html>Return back Or <a href=/index.html>Return to home page</a></div>");
+        return new HttpMessage("HTTP/1.1 200 OK", "<p>Filter by Title: </p>"
+                + responseText + "<br><a href=/questionnaireFilter.html>Return back " +
+                "Or <a href=/index.html>Return to home page</a></div>");
     }
 }

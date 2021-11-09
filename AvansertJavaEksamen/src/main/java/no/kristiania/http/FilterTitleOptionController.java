@@ -5,10 +5,10 @@ import no.kristiania.questionnaire.QuestionnaireDao;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 
-public class FilterTitleController implements HttpController {
+public class FilterTitleOptionController implements HttpController {
     private final QuestionnaireDao qreDao;
 
-    public FilterTitleController(QuestionnaireDao qreDao) {
+    public FilterTitleOptionController(QuestionnaireDao qreDao) {
 
         this.qreDao = qreDao;
     }

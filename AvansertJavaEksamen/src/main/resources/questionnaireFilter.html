@@ -2,19 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create question Filter | Kristiania Questionnaire</title>
+    <title>Filter | Kristiania Questionnaire</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>List of all questionnaire:</h2>
+<h2>Filter questionnaire:</h2>
 
 <form action="/api/catchQuryTitle" method="get">
     <label>Filter by Title:<select name="title-name" id="title-id"></select></label>
     <button>Click to filter</button>
 </form>
 
-<form action="/api/catchQuryQuestion" method="POST">
+<form action="/api/searchOption" method="POST">
     <label>Filter by question: <input type="search" placeholder="search" name="question-name"/></label>
     <button>Click to filter</button>
 </form>

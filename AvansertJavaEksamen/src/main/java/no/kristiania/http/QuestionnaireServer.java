@@ -28,10 +28,10 @@ public class QuestionnaireServer {
         httpServer.addController(new RoleOptionsController(qreDao));
         httpServer.addController(new EchoQueryController());
 
-        httpServer.addController(new FilterTitleController(qreDao));
+        httpServer.addController(new FilterTitleOptionController(qreDao));
         httpServer.addController(new ListFilterQuestionnaireController(qreDao));
-        httpServer.addController(new FilterGetTitleController(qreDao));
-        httpServer.addController(new FilterGetQuestionController(qreDao));
+        httpServer.addController(new FilterByTitleController(qreDao));
+        httpServer.addController(new FilterBySearchingController(qreDao));
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }
 

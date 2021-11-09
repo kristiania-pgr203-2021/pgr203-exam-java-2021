@@ -37,10 +37,22 @@ public class AddOptionController implements HttpController {
                 logger.info("query decoding: {}", decodeQuery);
 
                 OptionToQn optionToQn = new OptionToQn();
-                optionToQn.setOption(queryMap.get("option"));
-                optionToQn.setQuestion_fk(Long.parseLong(queryMap.get("questions")));
+                String getOption = queryMap.get("option");
+                optionToQn.setOption(getOption);
+                long getQuestionFk = Long.parseLong(queryMap.get("questions"));
+                optionToQn.setQuestion_fk(getQuestionFk);
+
+                for (OptionToQn checking:
+                        optionDao.listAll()) {
+                    if (checking.getOption().equals(getOption) && checking.getQuestion_fk() == getQuestionFk){
+                        String response = "<div style=color:red>You have allerede added \""+getOption+"\" to question</div><br><a href=/index.html>Return to front page</a>" +
+                        " Or <a href=/addOption.html>Add new Option</a>";
+                        return new HttpMessage("Http/1.1 400 Bad Reqeust", response);
+                    }
+                }
+
                 optionDao.save(optionToQn);
-                logger.info("option: {}: and id: {} have been added", queryMap.get("option"), queryMap.get("questions"));
+                logger.info("option: {}: and id: {} have been added ", queryMap.get("option"), queryMap.get("questions"));
 
                 for (OptionToQn OpToQn : optionDao.listAll()) {
                     responseText = "<div>Option to question have been added: "+"<h3>" + OpToQn.getOption() + "<h3>" + "<br><a href=/index.html>Return to front page</a>" +

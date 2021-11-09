@@ -35,17 +35,18 @@ public class FilterGetTitleController implements HttpController {
 
                 for (Questionnaire qre:
                         qreDao.listAllByTitleID(Long.valueOf(queryMap.get("title-name")))) {
+                    response = "";
                     for (Questionnaire qreList:
                             qreDao.listByTitle(qre.getQuestionTitle())) {
                                  response += "<div><h4>Title: "+qre.getQuestionTitle() +
-                                "Text: " + qre.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
+                                " Text: " + qre.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
                                 + "</h4></div>";
                     }
                 }
             }
         }
 
-        String responseText = "<div><h3>Filtering list of all samme title: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
+        String responseText = "<div><h3>Filtering list of all of same title: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
 
         return new HttpMessage("HTTP/1.1 200 OK", responseText);
 

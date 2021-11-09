@@ -98,7 +98,7 @@ public class QuestionnaireDao {
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<Questionnaire> qreList = new ArrayList<>();
 
-                    while (rs.next()) {
+                    while (rs.equals(text)) {
                         mapFromResultSetWihOption(rs, qreList);
                     }
                     return qreList;

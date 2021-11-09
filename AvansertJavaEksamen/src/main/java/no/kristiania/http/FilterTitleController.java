@@ -1,11 +1,9 @@
 package no.kristiania.http;
 
-import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FilterTitleController implements HttpController {

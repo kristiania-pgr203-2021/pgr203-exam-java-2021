@@ -35,9 +35,11 @@ public class FilterGetQuestionController implements HttpController {
 
                 for (Questionnaire qre:
                         qreDao.listAllByTitleID(Long.valueOf(queryMap.get("question-name")))) {
-                    response = "";
                     for (Questionnaire qreList:
                         qreDao.listByText(qre.getQuestionText())) {
+                        if (qre.getOptionForQuestion().isEmpty() || qre.getOptionForQuestion() == null){
+                            System.out.println("en feil er");
+                        }
                         response += "<div><h4> Title: " + qre.getQuestionTitle() +
                                 " Text: " + qre.getQuestionText() + " Option: " + qreList.getOptionForQuestion()
                                 + "</h4></div><br>";

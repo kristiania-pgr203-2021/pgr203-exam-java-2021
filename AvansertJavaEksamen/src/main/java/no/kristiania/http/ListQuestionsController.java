@@ -7,7 +7,6 @@ import java.sql.SQLException;
 
 public class ListQuestionsController implements HttpController {
     private final QuestionnaireDao qreDao;
-
     public ListQuestionsController(QuestionnaireDao qreDao) {
         this.qreDao = qreDao;
     }
@@ -24,7 +23,6 @@ public class ListQuestionsController implements HttpController {
             responseText += "<div>Title: "+ qre.getQuestionTitle() +
                     " & Text: " + qre.getQuestionText() +
                     "</div>";
-
             for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
                 if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())){
                     responseText += "<ul style=list-style-type:square>" +

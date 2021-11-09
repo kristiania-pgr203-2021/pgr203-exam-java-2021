@@ -21,66 +21,30 @@ public class FilterGetQuestionController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
-
-
         Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
 
-        String qestionText = queryMap.get("question-name");
+        String questionText = AddQuestionController.decodeValue(queryMap.get("question-name"));
 
-        for (Questionnaire list:
-                qreDao.search(qestionText)) {
-            System.out.println("Title" + list.getQuestionTitle() + " Text: " + list.getQuestionText() + " Option:" + list.getOptionForQuestion());
-        }
-
-        return new HttpMessage("HTTP/1.1 200 OK", qestionText);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       /* String[] requestLine = request.startLine.split(" ");
-        String requestTarget = requestLine[1];
-
-        int questionPos = requestTarget.indexOf('?');
-        String query = requestTarget.substring(questionPos+1);
-        String requestGet = request.startLine.split(" ")[0];
-
-        String response = "";
-        if (requestGet.equals("GET")){
-            if (query != null) {
-                Map<String, String> queryMap = HttpMessage.parseRequestParameters(query);
-
-                for (Questionnaire qre:
-                        qreDao.listAllByTitleID(Long.valueOf(queryMap.get("question-name")))) {
-                    for (Questionnaire qreList:
-                        qreDao.listByText(qre.getQuestionText())) {
-                        if (qre.getOptionForQuestion().isEmpty() || qre.getOptionForQuestion() == null){
-                            System.out.println("en feil er");
+        String responseText = "";
+            for (Questionnaire qre :
+                    qreDao.search(questionText)) {
+                responseText += "<div>Title: " + qre.getQuestionTitle() +
+                        " & Text: " + qre.getQuestionText() +
+                        "</div>";
+                for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
+                    if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())) {
+                        if (qre2.getOptionForQuestion() == null) {
+                            responseText += "";
+                        }else {
+                            responseText += "<ul style=list-style-type:square>" +
+                                    "<li>" + " Option: " + qre2.getOptionForQuestion() + "</li>" +
+                                    "</ul>";
                         }
-                        response += "<div><h4> Title: " + qre.getQuestionTitle() +
-                                " Text: " + qre.getQuestionText() + " Option: " + qreList.getOptionForQuestion()
-                                + "</h4></div><br>";
                     }
                 }
             }
-        }
-
-        String responseText = "<div><h3>Filtering list of all samme text: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
-
-        return new HttpMessage("HTTP/1.1 200 OK", responseText);*/
+        return new HttpMessage("HTTP/1.1 200 OK", "<p>Filtering only text with wildcard</p>" +
+                responseText + "<br><a href=/questionnaireFilter.html>Return back Or " +
+                "<a href=/index.html>Return to home page</a></div>");
     }
 }

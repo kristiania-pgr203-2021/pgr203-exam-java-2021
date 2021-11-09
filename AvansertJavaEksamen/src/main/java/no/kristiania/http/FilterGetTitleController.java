@@ -21,41 +21,37 @@ public class FilterGetTitleController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
-
         String[] requestLine = request.startLine.split(" ");
         String requestTarget = requestLine[1];
 
         int questionPos = requestTarget.indexOf('?');
-        String query = requestTarget.substring(questionPos+1);
+        String query = requestTarget.substring(questionPos + 1);
         String requestGet = request.startLine.split(" ")[0];
 
-        String response = "";
-        if (requestGet.equals("GET")){
+        String responseText = "";
+        if (requestGet.equals("GET")) {
             if (query != null) {
                 Map<String, String> queryMap = HttpMessage.parseRequestParameters(query);
 
-                for (Questionnaire qre:
+                for (Questionnaire qre :
                         qreDao.listAllByTitleID(Long.valueOf(queryMap.get("title-name")))) {
-                    response = "";
-                    for (Questionnaire qreList:
-                            qreDao.listByTitle(qre.getQuestionTitle())) {
-                            if (qreList.getOptionForQuestion()== null){
-                                response += "<div><h4>Title: "+qre.getQuestionTitle() +
-                                        " Text: " + qre.getQuestionText()
-                                        + "</h4></div>";
-                            }else{
-                                response += "<div><h4>Title: "+qre.getQuestionTitle() +
-                                        " Text: " + qre.getQuestionText() + " Option: " + qreList.getOptionForQuestion()
-                                        + "</h4></div>";
+                    responseText = "<div>Title: " + qre.getQuestionTitle() +
+                            " & Text: " + qre.getQuestionText() +
+                            "</div>";
+                    for (Questionnaire qre2 : qreDao.listAllQuestionAndOptions()) {
+                        if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())) {
+                            if (qre2.getOptionForQuestion() == null) {
+                                responseText += "";
+                            } else {
+                                responseText += "<ul style=list-style-type:square>" +
+                                        "<li>" + " Option: " + qre2.getOptionForQuestion() + "</li>" +
+                                        "</ul>";
                             }
-
+                        }
                     }
                 }
             }
         }
-
-        String responseText = "<div><h3>Filtering list of all of same title: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
-
-        return new HttpMessage("HTTP/1.1 200 OK", responseText);
+        return new HttpMessage("HTTP/1.1 200 OK", responseText + "<br><a href=/questionnaireFilter.html>Return back Or <a href=/index.html>Return to home page</a></div>");
     }
 }

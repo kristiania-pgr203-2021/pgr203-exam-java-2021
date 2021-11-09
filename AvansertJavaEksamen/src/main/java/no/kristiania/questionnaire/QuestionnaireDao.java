@@ -69,44 +69,6 @@ public class QuestionnaireDao {
         }
     }
 
-    public List<Questionnaire> listByTitle(String title) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where question_title = ?"
-            )) {
-                statement.setString(1, title);
-
-                try (ResultSet rs = statement.executeQuery()) {
-                    ArrayList<Questionnaire> qreList = new ArrayList<>();
-
-                    while (rs.next()) {
-                        mapFromResultSetWihOption(rs, qreList);
-                    }
-                    return qreList;
-                }
-            }
-        }
-    }
-
-    public List<Questionnaire> listByText(String text) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where question_text = ?"
-            )) {
-                statement.setString(1, text);
-
-                try (ResultSet rs = statement.executeQuery()) {
-                    ArrayList<Questionnaire> qreList = new ArrayList<>();
-
-                    while (rs.equals(text)) {
-                        mapFromResultSetWihOption(rs, qreList);
-                    }
-                    return qreList;
-                }
-            }
-        }
-    }
-
     public List<String> listAllByTitle() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
@@ -117,23 +79,6 @@ public class QuestionnaireDao {
 
                     while (rs.next()) {
                         result.add(rs.getString("question_title"));
-                    }
-                    return result;
-                }
-            }
-        }
-    }
-
-    public List<String> listAllByTextOption() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions"
-            )) {
-                try (ResultSet rs = statement.executeQuery()) {
-                    ArrayList<String> result = new ArrayList<>();
-
-                    while (rs.next()) {
-                        result.add(rs.getString("question_text"));
                     }
                     return result;
                 }

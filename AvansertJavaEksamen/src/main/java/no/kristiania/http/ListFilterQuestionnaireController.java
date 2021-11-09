@@ -19,8 +19,6 @@ public class ListFilterQuestionnaireController implements HttpController {
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException {
 
-
         return new HttpMessage("HTTP/1.1 200 Ok", "et problem her");
-
     }
 }

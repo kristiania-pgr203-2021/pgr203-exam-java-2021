@@ -19,12 +19,6 @@
     <button>Click to filter</button>
 </form>
 
-<!--
-<form action="/api/catchQuryQuestion" method="get">
-    <label>Filter by question:<select name="question-name" id="question-id"></select></label>
-    <button>Click to filter</button>
-</form>
--->
 
 <div id="questionnaire"></div>
 
@@ -39,12 +33,6 @@
         return res.text();
     }).then(function (text){
         document.getElementById("title-id").innerHTML += text;
-    })
-
-    fetch("/api/questionNameOptions").then(function (res){
-        return res.text();
-    }).then(function (text){
-        document.getElementById("question-id").innerHTML += text;
     })
 
     fetch("/api/questionnaire" + location.search).then(function (res){

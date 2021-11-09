@@ -13,10 +13,18 @@
     <label>Filter by Title:<select name="title-name" id="title-id"></select></label>
     <button>Click to filter</button>
 </form>
+
+<form action="/api/catchQuryQuestion" method="POST">
+    <label>Filter by question: <input type="search" placeholder="search" name="question-name"/></label>
+    <button>Click to filter</button>
+</form>
+
+<!--
 <form action="/api/catchQuryQuestion" method="get">
     <label>Filter by question:<select name="question-name" id="question-id"></select></label>
     <button>Click to filter</button>
 </form>
+-->
 
 <div id="questionnaire"></div>
 

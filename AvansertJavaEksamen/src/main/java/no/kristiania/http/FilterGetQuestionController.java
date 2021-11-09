@@ -21,7 +21,38 @@ public class FilterGetQuestionController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
-        String[] requestLine = request.startLine.split(" ");
+
+
+        Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
+
+        String qestionText = queryMap.get("question-name");
+
+        for (Questionnaire list:
+                qreDao.search(qestionText)) {
+            System.out.println("Title" + list.getQuestionTitle() + " Text: " + list.getQuestionText() + " Option:" + list.getOptionForQuestion());
+        }
+
+        return new HttpMessage("HTTP/1.1 200 OK", qestionText);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+       /* String[] requestLine = request.startLine.split(" ");
         String requestTarget = requestLine[1];
 
         int questionPos = requestTarget.indexOf('?');
@@ -50,6 +81,6 @@ public class FilterGetQuestionController implements HttpController {
 
         String responseText = "<div><h3>Filtering list of all samme text: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
 
-        return new HttpMessage("HTTP/1.1 200 OK", responseText);
+        return new HttpMessage("HTTP/1.1 200 OK", responseText);*/
     }
 }

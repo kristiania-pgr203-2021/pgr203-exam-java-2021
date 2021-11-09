@@ -52,7 +52,7 @@ public class QuestionnaireDao {
     public List<Questionnaire> listAllByTitleID(Long title) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions join option_to_qn on questions.id = question_fk where questions.id = ?"
+                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where questions.id = ?"
             )) {
                 statement.setLong(1, title);
 
@@ -72,7 +72,7 @@ public class QuestionnaireDao {
     public List<Questionnaire> listByTitle(String title) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions join option_to_qn on questions.id = question_fk where question_title = ?"
+                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where question_title = ?"
             )) {
                 statement.setString(1, title);
 
@@ -91,7 +91,7 @@ public class QuestionnaireDao {
     public List<Questionnaire> listByText(String text) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions join option_to_qn on questions.id = question_fk where question_text = ?"
+                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where question_text = ?"
             )) {
                 statement.setString(1, text);
 
@@ -158,10 +158,28 @@ public class QuestionnaireDao {
         }
     }
 
+    public List<Questionnaire> search(String search) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM questions left JOIN option_to_qn on questions.id = question_fk where questions.question_text like (?)"
+
+            )) {
+                statement.setString(1, "%" + search + "%");
+                try (ResultSet rs = statement.executeQuery()) {
+                    ArrayList<Questionnaire> qre = new ArrayList<>();
+                    while (rs.next()) {
+                        mapFromResultSetWihOption(rs, qre);
+                    }
+                    return qre;
+                }
+            }
+        }
+    }
+
     public List<Questionnaire> listAllQuestionAndOptions() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM questions join option_to_qn on questions.id = question_fk"
+                    "SELECT * FROM questions LEFT join option_to_qn on questions.id = question_fk"
             )) {
                 try (ResultSet rs = statement.executeQuery()) {
                     List<Questionnaire> result = new ArrayList<>();

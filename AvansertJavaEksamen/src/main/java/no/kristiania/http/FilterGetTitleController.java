@@ -21,6 +21,7 @@ public class FilterGetTitleController implements HttpController {
 
     @Override
     public HttpMessage handle(HttpMessage request) throws SQLException, UnsupportedEncodingException {
+
         String[] requestLine = request.startLine.split(" ");
         String requestTarget = requestLine[1];
 
@@ -38,9 +39,16 @@ public class FilterGetTitleController implements HttpController {
                     response = "";
                     for (Questionnaire qreList:
                             qreDao.listByTitle(qre.getQuestionTitle())) {
-                                 response += "<div><h4>Title: "+qre.getQuestionTitle() +
-                                " Text: " + qre.getQuestionText() + "Option: " + qreList.getOptionForQuestion()
-                                + "</h4></div>";
+                            if (qreList.getOptionForQuestion()== null){
+                                response += "<div><h4>Title: "+qre.getQuestionTitle() +
+                                        " Text: " + qre.getQuestionText()
+                                        + "</h4></div>";
+                            }else{
+                                response += "<div><h4>Title: "+qre.getQuestionTitle() +
+                                        " Text: " + qre.getQuestionText() + " Option: " + qreList.getOptionForQuestion()
+                                        + "</h4></div>";
+                            }
+
                     }
                 }
             }
@@ -49,6 +57,5 @@ public class FilterGetTitleController implements HttpController {
         String responseText = "<div><h3>Filtering list of all of same title: " + "</h3>" + response + "<br><a href=/questionnaireFilter.html>Return back to see</a></div>";
 
         return new HttpMessage("HTTP/1.1 200 OK", responseText);
-
     }
 }

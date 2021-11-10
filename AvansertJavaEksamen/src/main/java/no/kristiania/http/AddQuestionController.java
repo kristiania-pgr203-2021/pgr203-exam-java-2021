@@ -44,10 +44,8 @@ public class AddQuestionController implements HttpController {
         qreDao.save(qre);
         logger.info("Title: {} and Text: {} have been added", qre.getQuestionTitle(), qre.getQuestionText());
 
-        String responseText = "<div>Question have been added successfully on database. <br><a href=/index.html>Return to front page</a><br>" +
-                "Or <a href=/addOption.html>Add Option to question</a></div>";
 
-        return new HttpMessage("Http/1.1 200 Ok", responseText);
+        return new HttpMessage("Http/1.1 303 See other", "", "/index.html");
     }
 
     public static String decodeValue(String responseText) {

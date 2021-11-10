@@ -10,6 +10,7 @@ public class HttpMessage {
     public String startLine;
     public final Map<String, String> headerFields = new HashMap<>();
     public String messageBody;
+    private String location;
 
 
     public HttpMessage(Socket socket) throws IOException {
@@ -24,6 +25,13 @@ public class HttpMessage {
         this.startLine = startLine;
         this.messageBody = messageBody;
     }
+
+    public HttpMessage(String startLine, String messageBody, String location){
+        this.startLine = startLine;
+        this.messageBody = messageBody;
+        this.location = location;
+    }
+
 
     public HttpMessage(String startLine){
         this.startLine = startLine;
@@ -82,6 +90,7 @@ public class HttpMessage {
                 "Content-Length: " + messageBody.getBytes().length + "\r\n" +
                 "Connection: close\r\n" +
                 "Content-type: text/html; charset=UTF-8" + "\r\n" +
+                "Location: " + location + "\r\n" +
                 "\r\n" +
                 messageBody;
         socket.getOutputStream().write(response.getBytes());

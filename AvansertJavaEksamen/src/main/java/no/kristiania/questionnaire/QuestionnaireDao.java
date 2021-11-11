@@ -137,6 +137,27 @@ public class QuestionnaireDao {
         }
     }
 
+    public List<Questionnaire> listAllQuestionAndScale() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "select distinct question_title, question_text, scale_value, option_value from questions left join option_to_qn on questions.id = option_to_qn.question_fk left join scale_options on option_to_qn.question_fk = scale_options.question_fk"
+            )) {
+                try (ResultSet rs = statement.executeQuery()) {
+                    List<Questionnaire> result = new ArrayList<>();
+                    while (rs.next()){
+                        Questionnaire qre = new Questionnaire();
+                        qre.setQuestionTitle(rs.getString("question_title"));
+                        qre.setQuestionText(rs.getString("question_text"));
+                        qre.setScaleForQuestion(rs.getString("scale_value"));
+                        qre.setOptionForQuestion(rs.getString("option_value"));
+                        result.add(qre);
+                    }
+                    return result;
+                }
+            }
+        }
+    }
+
     private void mapFromResultSetWihOption(ResultSet rs, List<Questionnaire> result) throws SQLException {
         Questionnaire qre = new Questionnaire();
         qre.setQuestionText(rs.getString("question_text"));

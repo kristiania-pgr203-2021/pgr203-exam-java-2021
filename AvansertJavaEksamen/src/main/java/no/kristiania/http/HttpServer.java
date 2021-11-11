@@ -104,4 +104,8 @@ public class HttpServer {
     public void addController(HttpController controller) {
         controllers.put(controller.getPath(), controller);
     }
+
+    public HashMap<String, HttpController> getControllers() {
+        return controllers;
+    }
 }

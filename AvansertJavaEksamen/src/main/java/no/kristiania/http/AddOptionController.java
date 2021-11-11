@@ -2,6 +2,8 @@ package no.kristiania.http;
 
 import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
+import no.kristiania.questionnaire.Scale;
+import no.kristiania.questionnaire.ScaleDao;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -9,10 +11,16 @@ import java.util.Map;
 import static no.kristiania.http.QuestionnaireServer.logger;
 
 public class AddOptionController implements HttpController {
-    private final OptionToQnDao optionDao;
+    private OptionToQnDao optionDao;
+    private ScaleDao scaleDao;
 
     public AddOptionController(OptionToQnDao optionDao) {
         this.optionDao = optionDao;
+    }
+
+    public AddOptionController(OptionToQnDao optionDao, ScaleDao scaleDao) {
+        this.optionDao = optionDao;
+        this.scaleDao = scaleDao;
     }
 
     @Override
@@ -41,6 +49,7 @@ public class AddOptionController implements HttpController {
                 optionToQn.setOption(getOption);
                 long getQuestionFk = Long.parseLong(queryMap.get("questions"));
                 optionToQn.setQuestion_fk(getQuestionFk);
+
 
                 for (OptionToQn checking:
                         optionDao.listAll()) {

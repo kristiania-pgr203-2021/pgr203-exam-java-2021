@@ -32,20 +32,41 @@ public class AddQuestionController implements HttpController {
         String questionText = decodeValue(queryMap.get("questionText"));
         qre.setQuestionText(questionText);
 
-        for (Questionnaire checking:
-             qreDao.listAll()) {
-            if (checking.getQuestionTitle().equals(questionTitle) && checking.getQuestionText().equals(questionText)){
-                String response = "<div style=color:red>You have allerede added \""+questionTitle+ "\"" + " and " + "\""+questionText+"\" " + " to questionnaire</div><br><a href=/index.html>Return to front page</a>" +
-                        " Or <a href=/newQuestionnaire.html>Add new question</a>";
-                return new HttpMessage("Http/1.1 400 Bad Reqeust", response);
+        String type = decodeValue(queryMap.get("skalaOption"));
+        System.out.println(type);
+
+        if (type.equals("på en skala")){
+            for (Questionnaire checking:
+                    qreDao.listAll()) {
+                if (checking.getQuestionTitle().equals(questionTitle) && checking.getQuestionText().equals(questionText)){
+                    String response = "<div style=color:red>You have allerede added \""+questionTitle+ "\"" + " and " + "\""+questionText+"\" " + " to questionnaire</div><br><a href=/index.html>Return to front page</a>" +
+                            " Or <a href=/newQuestionnaire.html>Add new question</a>";
+                    return new HttpMessage("Http/1.1 400 Bad Reqeust", response);
+                }
             }
+
+            qreDao.save(qre);
+            logger.info("Title: {} and Text: {} have been added", qre.getQuestionTitle(), qre.getQuestionText());
+
+
+            return new HttpMessage("Http/1.1 303 See other", "", "/ScaleToQuestion.html");
         }
+        else {
+            for (Questionnaire checking:
+                    qreDao.listAll()) {
+                if (checking.getQuestionTitle().equals(questionTitle) && checking.getQuestionText().equals(questionText)){
+                    String response = "<div style=color:red>You have allerede added \""+questionTitle+ "\"" + " and " + "\""+questionText+"\" " + " to questionnaire</div><br><a href=/index.html>Return to front page</a>" +
+                            " Or <a href=/newQuestionnaire.html>Add new question</a>";
+                    return new HttpMessage("Http/1.1 400 Bad Reqeust", response);
+                }
+            }
 
-        qreDao.save(qre);
-        logger.info("Title: {} and Text: {} have been added", qre.getQuestionTitle(), qre.getQuestionText());
+            qreDao.save(qre);
+            logger.info("Title: {} and Text: {} have been added", qre.getQuestionTitle(), qre.getQuestionText());
 
 
-        return new HttpMessage("Http/1.1 303 See other", "", "/index.html");
+            return new HttpMessage("Http/1.1 303 See other", "", "/addOption.html");
+        }
     }
 
     public static String decodeValue(String responseText) {

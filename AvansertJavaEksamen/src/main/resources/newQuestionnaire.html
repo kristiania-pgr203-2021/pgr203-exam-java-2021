@@ -12,6 +12,13 @@
 <form method="POST" action="/api/newQuestions">
     <label>Question title: <input type="text" name="questionTitle"/></label>
     <label>Question text: <input type="text" name="questionText"/></label>
+
+    <p>Hvordan skal spørsmålet framstilles</p>
+    <select  name="skalaOption">
+        <option>på en skala</option>
+        <option>svarAltarnativ</option>
+    </select>
+
     <button>Add</button>
 </form>
 

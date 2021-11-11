@@ -6,6 +6,16 @@ public class Questionnaire {
     private String questionText;
     private String optionForQuestion;
 
+    private String scaleForQuestion;
+
+    public String getScaleForQuestion() {
+        return scaleForQuestion;
+    }
+
+    public void setScaleForQuestion(String scaleForQuestion) {
+        this.scaleForQuestion = scaleForQuestion;
+    }
+
     public String getOptionForQuestion() {
         return optionForQuestion;
     }

@@ -34,13 +34,14 @@ public class ListAllWithScaleAndOption implements HttpController {
             for (Questionnaire qre2 :
                     qreDao.listAllQuestionAndScale()) {
                 if (qre2.getQuestionTitle().equals(qre.getQuestionTitle())) {
+                    if (qre2.getScaleForQuestion() != null){
                         responseText += "<ul style=list-style-type:circle>" +
                                 "<li>" + " Scale: " + qre2.getScaleForQuestion() + "</li>" +
                                 "</ul>";
                     }
                 }
             }
-
+        }
 
         for (Questionnaire qre : qreDao.listAll()) {
             responseText += "<br><div><-- Question with answer: --> </div><br>" +

@@ -92,14 +92,18 @@ class HttpServerTest {
                 "localhost",
                 server.getPort(),
                 "/api/newQuestions",
-                "questionText=questionTest&questionTitle=titleTest",
+                "questionTitle=titleTest&questionText=questionTest&skalaOption=på en skala",
                 "text/html"
         );
-        assertEquals(200, postClient.getStatusCode());
+
+
+        assertEquals(303, postClient.getStatusCode());
         assertThat(qreDao.listAll())
                 .anySatisfy(q -> {
                     assertThat(q.getQuestionTitle()).isEqualTo("titleTest");
                     assertThat(q.getQuestionText()).isEqualTo("questionTest");
+                    assertThat(q.getQuestionTitle()).doesNotContain("skalaOption");
+
                 });
     }
 
@@ -110,11 +114,11 @@ class HttpServerTest {
                 "localhost",
                 server.getPort(),
                 "/api/newQuestions",
-                "questionText=hallå på deg?&questionTitle=titleTest",
+                "questionText=hallå på deg?&questionTitle=titleTest&skalaOption=på en skala",
                 "text/html"
 
         );
-        assertEquals(200, postClient.getStatusCode());
+        assertEquals(303, postClient.getStatusCode());
         assertThat(qreDao.listAll())
                 .anySatisfy(q -> {
                     assertThat(q.getQuestionTitle()).isEqualTo("titleTest");

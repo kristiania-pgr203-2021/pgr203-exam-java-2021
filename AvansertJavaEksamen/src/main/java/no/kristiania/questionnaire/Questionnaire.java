@@ -50,9 +50,11 @@ public class Questionnaire {
 
     @Override
     public String toString() {
-        return "\n" + "Questionnaire{" +
-                "questionText='" + questionText + '\'' +
+        return "Questionnaire{" +
+                "questionTitle='" + questionTitle + '\'' +
+                ", questionText='" + questionText + '\'' +
                 ", optionForQuestion='" + optionForQuestion + '\'' +
-                '}'+ "\n";
+                ", scaleForQuestion='" + scaleForQuestion + '\'' +
+                '}';
     }
 }

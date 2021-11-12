@@ -37,11 +37,6 @@ public class ListQuestionsController implements HttpController {
             }
         }
 
-        for (Questionnaire scale:
-                qreDao.listAllQuestionAndScale()) {
-            System.out.println("her skrives ut" + scale);
-        }
-
         if (responseText.isEmpty()){
             responseText = "<h3>List is empty, add new question</h3>";
         }

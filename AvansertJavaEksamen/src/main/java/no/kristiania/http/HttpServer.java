@@ -20,9 +20,9 @@ public class HttpServer {
                 try(Socket clientSocket = serverSocket.accept()){
                     handleClient(clientSocket);
                 }catch (IOException e){
-                    logger.warn("invalid input or invalid output has occurred" + e.getMessage());
+                    logger.warn("invalid input or invalid output has occurred " + e.getMessage());
                 }catch (SQLException e){
-                    logger.warn("Something went wrong with database" + e.getMessage());
+                    logger.warn("Something went wrong with database " + e.getMessage());
                 }
             }
         }).start();
@@ -59,7 +59,6 @@ public class HttpServer {
                 responseText;
         clientSocket.getOutputStream().write(response.getBytes());
     }
-
 
     public int getPort() {
         return serverSocket.getLocalPort();

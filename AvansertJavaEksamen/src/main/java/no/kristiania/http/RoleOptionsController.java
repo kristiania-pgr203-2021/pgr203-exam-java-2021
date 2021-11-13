@@ -1,22 +1,18 @@
 package no.kristiania.http;
 
+import no.kristiania.questionnaire.Questionnaire;
 import no.kristiania.questionnaire.QuestionnaireDao;
 import no.kristiania.questionnaire.ScaleDao;
 
 import java.sql.SQLException;
 
-
 public class RoleOptionsController implements HttpController {
-
-
     private  QuestionnaireDao qreDao;
     private  ScaleDao scaleDao;
 
     public RoleOptionsController(QuestionnaireDao qreDao) {
         this.qreDao = qreDao;
-
     }
-
 
     public RoleOptionsController(QuestionnaireDao qreDao, ScaleDao scaleDao) {
 
@@ -34,9 +30,7 @@ public class RoleOptionsController implements HttpController {
         String[] requestLine = request.startLine.split(" ");
         String requestTarget = requestLine[1];
 
-        int questionPos = requestTarget.indexOf('?');
-        String query = requestTarget.substring(questionPos+1);
-
+        //Implementing dropdown menu for update and filter
         if (requestTarget.equals("/api/questionOptions")){
             String responseText = "";
 
@@ -47,6 +41,18 @@ public class RoleOptionsController implements HttpController {
             return new HttpMessage("HTTP/1.1 200 OK", responseText);
         }
 
+        //Implementing dropdown menu for update
+        if (requestTarget.equals("/api/textOptions")){
+            String responseText = "";
+
+            int value = 1;
+            for (Questionnaire qre : qreDao.listAll()) {
+                responseText += "<option value=" + (value++) + ">" + qre.getQuestionTitle() + ": " + qre.getQuestionText() + "</option><br>";
+            }
+            return new HttpMessage("HTTP/1.1 200 OK", responseText);
+        }
+
+        ////Implementing dropdown menu for Scale
         else {
             String responseText = "";
 
@@ -56,6 +62,5 @@ public class RoleOptionsController implements HttpController {
             }
             return new HttpMessage("HTTP/1.1 200 OK", responseText);
         }
-
     }
 }

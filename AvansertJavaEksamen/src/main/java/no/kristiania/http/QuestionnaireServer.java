@@ -28,8 +28,12 @@ public class QuestionnaireServer {
         httpServer.addController(new AddOptionController(option, scaleDao));
         httpServer.addController(new RoleOptionsController(qreDao, scaleDao));
         httpServer.getControllers().put("/api/questionOptionsSkala", new RoleOptionsController(qreDao, scaleDao));
+        httpServer.getControllers().put("/api/textOptions", new RoleOptionsController(qreDao));
         httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new EchoQueryController());
+
+        httpServer.addController(new UpdateQuestionController(qreDao));
+        httpServer.getControllers().put("/api/updateText", new UpdateQuestionController(qreDao));
 
         httpServer.addController(new AddQuestionController(qreDao));
         httpServer.addController(new ListQuestionsController(qreDao));

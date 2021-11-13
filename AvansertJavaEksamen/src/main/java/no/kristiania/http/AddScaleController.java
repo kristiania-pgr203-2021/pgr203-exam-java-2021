@@ -44,9 +44,9 @@ public class AddScaleController implements HttpController {
             for (Scale checking:
                     scaleDao.ForChecking()) {
                 if (checking.getQuestionScaleFk() == getQuestionId && checking.getScaleValue().equals(getScale)){
-                    String response = "<div style=color:red>You have allerede added \""+getScale+ "\""  + " to questionnaire</div><br>" +
+                    String response = "<div style=color:red>You have allerede added \""+getScale+ "\""  + " to question</div><br>" +
                             "<a href=/index.html>Return to front page</a>" +
-                            " Or <a href=/newQuestionnaire.html>Add new question</a>";
+                            " Or <a href=/ScaleToQuestion.html>Add new scale</a>";
                     return new HttpMessage("Http/1.1 400 Bad Reqeust", response);
                 }
             }

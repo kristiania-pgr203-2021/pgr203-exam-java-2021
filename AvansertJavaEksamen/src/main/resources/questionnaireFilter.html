@@ -20,8 +20,6 @@
 </form>
 
 
-<div id="questionnaire"></div>
-
 <div>
     <a href="index.html">Return to front page</a>
 </div>
@@ -35,11 +33,6 @@
         document.getElementById("title-id").innerHTML += text;
     })
 
-    fetch("/api/questionnaire" + location.search).then(function (res){
-        return res.text();
-    }).then(function (text){
-        document.getElementById("questionnaire").innerHTML = text;
-    })
 
 </script>
 

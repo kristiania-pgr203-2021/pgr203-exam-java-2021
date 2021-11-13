@@ -1,5 +1,7 @@
-package no.kristiania.http;
+package no.kristiania.AddController;
 
+import no.kristiania.http.HttpController;
+import no.kristiania.http.HttpMessage;
 import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
 import no.kristiania.questionnaire.ScaleDao;

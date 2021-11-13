@@ -1,5 +1,17 @@
 package no.kristiania.http;
 
+import no.kristiania.AddController.AddOptionController;
+import no.kristiania.AddController.AddQuestionController;
+import no.kristiania.AddController.AddScaleController;
+import no.kristiania.AddController.RoleOptionsController;
+import no.kristiania.UpdateController.UpdateQuestionTextController;
+import no.kristiania.UpdateController.UpdateQuestionTitleController;
+import no.kristiania.defaultController.EchoQueryController;
+import no.kristiania.filterController.FilterBySearchingController;
+import no.kristiania.filterController.FilterByTitleController;
+import no.kristiania.filterController.FilterTitleOptionController;
+import no.kristiania.listController.ListAllWithScaleAndOption;
+import no.kristiania.listController.ListQuestionsController;
 import no.kristiania.questionnaire.OptionToQnDao;
 import no.kristiania.questionnaire.QuestionnaireDao;
 import no.kristiania.questionnaire.ScaleDao;
@@ -14,23 +26,28 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class QuestionnaireServer {
-    static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
+   public static final Logger logger = LoggerFactory.getLogger(HttpServer.class);
 
     public static void main(String[] args) throws IOException {
         DataSource dataSource = createDataSource();
-
         QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
         OptionToQnDao option = new OptionToQnDao(dataSource);
         ScaleDao scaleDao = new ScaleDao(dataSource);
 
         HttpServer httpServer = new HttpServer(8000);
 
+        httpServerControllers(qreDao, option, scaleDao, httpServer);
+
+        logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
+    }
+
+    private static void httpServerControllers(QuestionnaireDao qreDao, OptionToQnDao option, ScaleDao scaleDao, HttpServer httpServer) {
+        httpServer.addController(new EchoQueryController());
         httpServer.addController(new AddOptionController(option, scaleDao));
+        httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new RoleOptionsController(qreDao, scaleDao));
         httpServer.getControllers().put("/api/questionOptionsSkala", new RoleOptionsController(qreDao, scaleDao));
         httpServer.getControllers().put("/api/textOptions", new RoleOptionsController(qreDao));
-        httpServer.addController(new AddScaleController(scaleDao));
-        httpServer.addController(new EchoQueryController());
 
         httpServer.addController(new UpdateQuestionTitleController(qreDao));
         httpServer.addController(new UpdateQuestionTextController(qreDao));
@@ -41,7 +58,6 @@ public class QuestionnaireServer {
         httpServer.addController(new FilterByTitleController(qreDao));
         httpServer.addController(new FilterBySearchingController(qreDao));
         httpServer.addController(new ListAllWithScaleAndOption(qreDao));
-        logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }
 
     private static DataSource createDataSource() throws IOException {

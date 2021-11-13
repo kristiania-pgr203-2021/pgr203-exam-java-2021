@@ -1,5 +1,10 @@
 package no.kristiania.http;
 
+import no.kristiania.AddController.AddOptionController;
+import no.kristiania.AddController.AddQuestionController;
+import no.kristiania.AddController.RoleOptionsController;
+import no.kristiania.defaultController.EchoQueryController;
+import no.kristiania.listController.ListQuestionsController;
 import no.kristiania.questionnaire.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

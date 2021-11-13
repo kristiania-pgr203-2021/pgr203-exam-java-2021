@@ -1,4 +1,6 @@
-package no.kristiania.http;
+package no.kristiania.defaultController;
+
+import no.kristiania.http.HttpServer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

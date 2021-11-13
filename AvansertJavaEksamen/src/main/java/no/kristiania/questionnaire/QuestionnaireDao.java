@@ -30,7 +30,11 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
         }
     }
 
-    public void Update(long id, String edit) throws SQLException {
+    public void updateTitle(long id, String title) throws SQLException {
+        super.updateQuestion(id, "update questions set question_title='" + title + "' where id= ?");
+    }
+
+    /*public void Update(long id, String edit) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "update questions set question_title='" + edit + "' where id= ?"
@@ -39,7 +43,7 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
                 statement.executeUpdate();
                 }
             }
-        }
+        }*/
 
 
     public Questionnaire retrieve(long id) throws SQLException {
@@ -53,7 +57,7 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
     public List<String> listAllByTitle() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions"
+                    "select * from questions order by id asc"
             )) {
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<String> result = new ArrayList<>();
@@ -70,7 +74,7 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
     public List<Questionnaire> listAll() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions"
+                    "select * from questions order by id asc"
             )) {
 
                 try (ResultSet rs = statement.executeQuery()) {

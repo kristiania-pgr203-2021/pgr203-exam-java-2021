@@ -47,6 +47,17 @@ public abstract class AbstractForDao<T> {
         }
     }
 
+    protected void updateQuestion(long id, String commands) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    commands
+            )) {
+                statement.setLong(1, id);
+                statement.executeUpdate();
+            }
+        }
+    }
+
     protected abstract T mapFromAbsResultSet(ResultSet rs) throws SQLException;
 
 }

@@ -6,6 +6,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static no.kristiania.http.QuestionnaireServer.logger;
+
 public class UpdateQuestionController implements HttpController {
     private final QuestionnaireDao qreDao;
 
@@ -30,17 +32,19 @@ public class UpdateQuestionController implements HttpController {
             Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
             Long getTextId = Long.valueOf(queryMap.get("text-id"));
             String getUpdateText = AddQuestionController.decodeValue(queryMap.get("question-text"));
-            System.out.println("Update text: " + getTextId + " " + getUpdateText);
 
+
+            logger.info("Updated text of specific row in questions table: {}", getUpdateText);
             return new HttpMessage("HTTP/1.1 200 OK", "it is done");
         }
         else {
             Map<String, String> queryMap = HttpMessage.parseRequestParameters(request.messageBody);
             Long getTitleId = Long.valueOf(queryMap.get("title-id"));
             String getUpdateTitle = AddQuestionController.decodeValue(queryMap.get("question-title"));
-            System.out.println("Update text: " + getTitleId + " " + getUpdateTitle);
 
-            qreDao.Update(getTitleId, getUpdateTitle);
+            qreDao.updateTitle(getTitleId, getUpdateTitle);
+            logger.info("Updated title of specific row in questions table: {}", getUpdateTitle);
+
 
             return new HttpMessage("HTTP/1.1 200 OK", "Else");
         }

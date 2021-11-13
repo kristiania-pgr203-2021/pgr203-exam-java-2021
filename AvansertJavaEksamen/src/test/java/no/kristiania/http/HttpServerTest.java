@@ -102,7 +102,7 @@ class HttpServerTest {
                 .anySatisfy(q -> {
                     assertThat(q.getQuestionTitle()).isEqualTo("titleTest");
                     assertThat(q.getQuestionText()).isEqualTo("questionTest");
-                    assertThat(q.getQuestionTitle()).doesNotContain("skalaOption");
+                    assertThat(q.getQuestionTitle()).doesNotContain("på en skala");
 
                 });
     }

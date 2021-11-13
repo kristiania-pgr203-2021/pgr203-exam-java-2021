@@ -5,7 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractForDao<T> {
 
@@ -15,15 +16,32 @@ public abstract class AbstractForDao<T> {
         this.dataSource = dataSource;
     }
 
-    protected T retrieve(long id, String Commands) throws SQLException {
+    protected T retrieve(long id, String commands) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    Commands
+                    commands
             )) {
                 statement.setLong(1, id);
                 try (ResultSet rs = statement.executeQuery()) {
                     rs.next();
                     return mapFromAbsResultSet(rs);
+                }
+            }
+        }
+    }
+
+    protected List<T> retrieveOfLists(long id, String commands) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    commands
+            )) {
+                statement.setLong(1, id);
+                try (ResultSet rs = statement.executeQuery()) {
+                    List<T> list = new ArrayList<>();
+                    while (rs.next()) {
+                        list.add(mapFromAbsResultSet(rs));
+                    }
+                    return list;
                 }
             }
         }

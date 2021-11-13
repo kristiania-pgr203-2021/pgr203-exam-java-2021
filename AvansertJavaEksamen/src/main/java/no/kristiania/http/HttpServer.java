@@ -24,7 +24,7 @@ public class HttpServer {
                 }catch (IOException e){
                     logger.warn("invalid input or invalid output has occurred" + e.getMessage());
                 }catch (SQLException e){
-                    logger.warn("Something went wrong with database" + e.getSQLState());
+                    logger.warn("Something went wrong with database" + e.getMessage());
                 }
             }
         }).start();

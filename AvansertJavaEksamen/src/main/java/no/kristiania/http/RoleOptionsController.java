@@ -1,7 +1,6 @@
 package no.kristiania.http;
 
 import no.kristiania.questionnaire.QuestionnaireDao;
-import no.kristiania.questionnaire.Scale;
 import no.kristiania.questionnaire.ScaleDao;
 
 import java.sql.SQLException;
@@ -52,7 +51,7 @@ public class RoleOptionsController implements HttpController {
             String responseText = "";
 
             int value = 1;
-            for (String scale : scaleDao.listAll()) {
+            for (String scale : scaleDao.listAllValues()) {
                 responseText += "<option value=" + (value++) + ">" + scale + "</option><br>";
             }
             return new HttpMessage("HTTP/1.1 200 OK", responseText);

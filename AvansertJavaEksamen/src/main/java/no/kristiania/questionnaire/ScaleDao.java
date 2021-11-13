@@ -33,24 +33,6 @@ public class ScaleDao {
         }
     }
 
-
-
-    public Scale retrieve(long id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from scale_options where id = ?"
-            )) {
-                statement.setLong(1, id);
-
-                try (ResultSet rs = statement.executeQuery()) {
-                    rs.next();
-
-                    return mapFromResultSet(rs);
-                }
-            }
-        }
-    }
-
     private Scale mapFromResultSet(ResultSet rs) throws SQLException {
         Scale scale = new Scale();
         scale.setId(rs.getLong("id"));
@@ -59,16 +41,15 @@ public class ScaleDao {
         return scale;
     }
 
-    public List<Scale> listAllScale() throws SQLException {
+    public List<Scale> ForChecking() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "select * from scale_options"
             )) {
-
                 try (ResultSet rs = statement.executeQuery()) {
                     ArrayList<Scale> scales = new ArrayList<>();
                     while (rs.next()) {
-                        mapFromResultSet(rs);
+                        scales.add(mapFromResultSet(rs));
                     }
                     return scales;
                 }
@@ -76,7 +57,7 @@ public class ScaleDao {
         }
     }
 
-    public List<String> listAll() throws SQLException {
+    public List<String> listAllValues() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "select * from scale_options"
@@ -85,12 +66,10 @@ public class ScaleDao {
                     ArrayList<String> scales = new ArrayList<>();
                     while (rs.next()) {
                         scales.add(rs.getString("scale_value"));
-
                     }
                     return scales;
                 }
             }
         }
     }
-
 }

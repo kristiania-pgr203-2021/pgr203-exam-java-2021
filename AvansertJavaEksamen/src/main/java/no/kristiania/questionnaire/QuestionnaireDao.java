@@ -5,13 +5,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuestionnaireDao {
-
-    private final DataSource dataSource;
+public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
 
     public QuestionnaireDao(DataSource dataSource) {
-
-        this.dataSource = dataSource;
+        super(dataSource);
     }
 
     public void save(Questionnaire questionnaire) throws SQLException {
@@ -34,39 +31,11 @@ public class QuestionnaireDao {
     }
 
     public Questionnaire retrieve(long id) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions where id = ?"
-            )) {
-                statement.setLong(1, id);
-
-                try (ResultSet rs = statement.executeQuery()) {
-                    rs.next();
-
-                    return mapFromResultSet(rs);
-                }
-            }
-        }
+        return super.retrieve(id, "select * from questions where id = ?");
     }
 
-    public List<Questionnaire> listAllByTitleID(Long title) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement(
-                    "select * from questions LEFT join option_to_qn on questions.id = question_fk where questions.id = ?"
-            )) {
-                statement.setLong(1, title);
-
-                try (ResultSet rs = statement.executeQuery()) {
-
-                    ArrayList<Questionnaire> qreList = new ArrayList<>();
-
-                    while (rs.next()) {
-                        mapFromResultSetWihOption(rs, qreList);
-                    }
-                    return qreList;
-                }
-            }
-        }
+    public List<Questionnaire> listAllByTitleID(long title) throws SQLException {
+        return super.retrieveOfLists(title, "select * from questions where id = ?");
     }
 
     public List<String> listAllByTitle() throws SQLException {
@@ -93,16 +62,15 @@ public class QuestionnaireDao {
             )) {
 
                 try (ResultSet rs = statement.executeQuery()) {
-                    ArrayList<Questionnaire> qre = new ArrayList<>();
+                    ArrayList<Questionnaire> result = new ArrayList<>();
                     while (rs.next()) {
-                        qre.add(mapFromResultSet(rs));
+                        result.add(mapFromAbsResultSet(rs));
                     }
-                    return qre;
+                    return result;
                 }
             }
         }
     }
-
 
     public List<Questionnaire> search(String search) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
@@ -112,11 +80,11 @@ public class QuestionnaireDao {
             )) {
                 statement.setString(1, "%" + search + "%");
                 try (ResultSet rs = statement.executeQuery()) {
-                    ArrayList<Questionnaire> qre = new ArrayList<>();
+                    ArrayList<Questionnaire> result = new ArrayList<>();
                     while (rs.next()) {
-                        mapFromResultSetWihOption(rs, qre);
+                        result.add(mapFromAbsResultSet(rs));
                     }
-                    return qre;
+                    return result;
                 }
             }
         }
@@ -130,14 +98,13 @@ public class QuestionnaireDao {
                 try (ResultSet rs = statement.executeQuery()) {
                     List<Questionnaire> result = new ArrayList<>();
                     while (rs.next()){
-                        mapFromResultSetWihOption(rs, result);
+                        result.add(mapFromAbsResultSet(rs));
                     }
                     return result;
                 }
             }
         }
     }
-
 
     public List<Questionnaire> listAllQuestionAndScale() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
@@ -158,20 +125,23 @@ public class QuestionnaireDao {
         }
     }
 
-    private void mapFromResultSetWihOption(ResultSet rs, List<Questionnaire> result) throws SQLException {
-        Questionnaire qre = new Questionnaire();
-        qre.setQuestionText(rs.getString("question_text"));
-        qre.setOptionForQuestion(rs.getString("option_value"));
-        qre.setQuestionTitle(rs.getString("question_title"));
-        result.add(qre);
-    }
+    @Override
+    protected Questionnaire mapFromAbsResultSet(ResultSet rs) throws SQLException {
+        ResultSetMetaData rsMetaData = rs.getMetaData();
+        int numberOfColumns = rsMetaData.getColumnCount();
 
-    private Questionnaire mapFromResultSet(ResultSet rs) throws SQLException {
-        Questionnaire questionnaire = new Questionnaire();
-        questionnaire.setId(rs.getLong("id"));
-        questionnaire.setQuestionTitle(rs.getString("question_title"));
-        questionnaire.setQuestionText(rs.getString("question_text"));
-        return questionnaire;
+        Questionnaire qre = new Questionnaire();
+        qre.setId(rs.getLong("id"));
+        qre.setQuestionTitle(rs.getString("question_title"));
+        qre.setQuestionText(rs.getString("question_text"));
+
+        for (int i = 1; i < numberOfColumns + 1; i++) {
+            String columnName = rsMetaData.getColumnName(i);
+            if ("option_value".equals(columnName)) {
+                qre.setOptionForQuestion(rs.getString("option_value"));
+            }
+        }
+        return qre;
     }
 
 }

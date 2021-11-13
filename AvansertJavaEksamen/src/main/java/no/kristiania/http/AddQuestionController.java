@@ -33,9 +33,11 @@ public class AddQuestionController implements HttpController {
         qre.setQuestionText(questionText);
 
         String type = decodeValue(queryMap.get("skalaOption"));
-        System.out.println(type);
+
 
         if (type.equals("på en skala")){
+            logger.info("Spørsmål framstill: {} ", type);
+
             for (Questionnaire checking:
                     qreDao.listAll()) {
                 if (checking.getQuestionTitle().equals(questionTitle) && checking.getQuestionText().equals(questionText)){
@@ -52,6 +54,7 @@ public class AddQuestionController implements HttpController {
             return new HttpMessage("Http/1.1 303 See other", "", "/ScaleToQuestion.html");
         }
         else {
+            logger.info("Spørsmål framstill: {} ", type);
             for (Questionnaire checking:
                     qreDao.listAll()) {
                 if (checking.getQuestionTitle().equals(questionTitle) && checking.getQuestionText().equals(questionText)){

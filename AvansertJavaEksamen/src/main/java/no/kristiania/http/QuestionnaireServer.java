@@ -30,7 +30,7 @@ public class QuestionnaireServer {
         httpServer.addController(new AddOptionController(option, scaleDao));
         httpServer.addController(new RoleOptionsController(qreDao, scaleDao));
         httpServer.getControllers().put("/api/questionOptionsSkala", new RoleOptionsController(qreDao, scaleDao));
-        httpServer.addController(new AddScaleController(qreDao, scaleDao));
+        httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new EchoQueryController());
 
         httpServer.addController(new FilterTitleOptionController(qreDao));

@@ -2,7 +2,6 @@ package no.kristiania.http;
 
 import no.kristiania.questionnaire.OptionToQn;
 import no.kristiania.questionnaire.OptionToQnDao;
-import no.kristiania.questionnaire.Scale;
 import no.kristiania.questionnaire.ScaleDao;
 
 import java.sql.SQLException;

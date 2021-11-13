@@ -34,6 +34,10 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
         super.updateQuestion(id, "update questions set question_title='" + title + "' where id= ?");
     }
 
+    public void updateText(long id, String text) throws SQLException {
+        super.updateQuestion(id, "update questions set question_text='" + text + "' where id= ?");
+    }
+
     public Questionnaire retrieve(long id) throws SQLException {
         return super.retrieve(id, "select * from questions where id = ?");
     }

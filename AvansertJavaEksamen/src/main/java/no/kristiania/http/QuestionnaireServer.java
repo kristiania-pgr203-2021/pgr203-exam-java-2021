@@ -32,8 +32,8 @@ public class QuestionnaireServer {
         httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new EchoQueryController());
 
-        httpServer.addController(new UpdateQuestionController(qreDao));
-        httpServer.getControllers().put("/api/updateText", new UpdateQuestionController(qreDao));
+        httpServer.addController(new UpdateQuestionTitleController(qreDao));
+        httpServer.addController(new UpdateQuestionTextController(qreDao));
 
         httpServer.addController(new AddQuestionController(qreDao));
         httpServer.addController(new ListQuestionsController(qreDao));

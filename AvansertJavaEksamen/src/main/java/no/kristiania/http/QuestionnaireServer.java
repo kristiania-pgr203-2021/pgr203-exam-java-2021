@@ -1,9 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.AddController.AddOptionController;
-import no.kristiania.AddController.AddQuestionController;
-import no.kristiania.AddController.AddScaleController;
-import no.kristiania.AddController.RoleOptionsController;
+import no.kristiania.AddController.*;
 import no.kristiania.UpdateController.UpdateQuestionTextController;
 import no.kristiania.UpdateController.UpdateQuestionTitleController;
 import no.kristiania.defaultController.EchoQueryController;
@@ -12,9 +9,7 @@ import no.kristiania.filterController.FilterByTitleController;
 import no.kristiania.filterController.FilterTitleOptionController;
 import no.kristiania.listController.ListAllWithScaleAndOption;
 import no.kristiania.listController.ListQuestionsController;
-import no.kristiania.questionnaire.OptionToQnDao;
-import no.kristiania.questionnaire.QuestionnaireDao;
-import no.kristiania.questionnaire.ScaleDao;
+import no.kristiania.questionnaire.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -33,17 +28,19 @@ public class QuestionnaireServer {
         QuestionnaireDao qreDao = new QuestionnaireDao(dataSource);
         OptionToQnDao option = new OptionToQnDao(dataSource);
         ScaleDao scaleDao = new ScaleDao(dataSource);
+        MemberDao memberDao = new MemberDao(dataSource);
 
         HttpServer httpServer = new HttpServer(8000);
 
-        httpServerControllers(qreDao, option, scaleDao, httpServer);
+        httpServerControllers(qreDao, option, scaleDao, memberDao, httpServer);
 
         logger.info("Starting http://localhost:{}/index.html", + httpServer.getPort());
     }
 
-    private static void httpServerControllers(QuestionnaireDao qreDao, OptionToQnDao option, ScaleDao scaleDao, HttpServer httpServer) {
+    private static void httpServerControllers(QuestionnaireDao qreDao, OptionToQnDao option, ScaleDao scaleDao, MemberDao memberDao, HttpServer httpServer) {
         httpServer.addController(new EchoQueryController());
-        httpServer.addController(new AddOptionController(option, scaleDao));
+        httpServer.addController(new AddOptionController(option));
+        httpServer.addController(new AddNewMemberController(memberDao));
         httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new RoleOptionsController(qreDao, scaleDao));
         httpServer.getControllers().put("/api/questionOptionsSkala", new RoleOptionsController(qreDao, scaleDao));

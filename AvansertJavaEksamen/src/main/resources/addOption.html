@@ -9,12 +9,14 @@
 
 <h2>Register:</h2>
 
-<form action="/api/newCookie" method="POST">
+<form action="/api/newMember" method="POST">
     <label>First name:<input type="text" name="firstname" id="first-name"></label><br>
     <label>Last name:<input type="text" name="lastname"></label><br>
     <label>Email: <input type="email" name="email"/></label><br>
     <button>Add</button>
 </form>
+
+<div id="members"></div>
 
 <h1>Add option/answer to question</h1>
 
@@ -36,6 +38,13 @@
         }).then(function(text) {
             document.getElementById("questions").innerHTML = text;
         });
+
+    fetch("/api/newMember")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("members").innerHTML = text;
+    });
 
 </script>
 </html>

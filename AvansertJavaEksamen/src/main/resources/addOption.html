@@ -7,7 +7,16 @@
 </head>
 <body>
 
-<h1>Add option to question</h1>
+<h2>Register:</h2>
+
+<form action="/api/newCookie" method="POST">
+    <label>First name:<input type="text" name="firstname" id="first-name"></label><br>
+    <label>Last name:<input type="text" name="lastname"></label><br>
+    <label>Email: <input type="email" name="email"/></label><br>
+    <button>Add</button>
+</form>
+
+<h1>Add option/answer to question</h1>
 
 <form method="GET" action="/api/alternativeAnswers">
     <label>Question:

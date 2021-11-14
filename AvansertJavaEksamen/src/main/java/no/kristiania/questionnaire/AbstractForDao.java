@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static no.kristiania.http.QuestionnaireServer.logger;
+
 public abstract class AbstractForDao<T> {
 
     protected final DataSource dataSource;
@@ -23,8 +25,12 @@ public abstract class AbstractForDao<T> {
             )) {
                 statement.setLong(1, id);
                 try (ResultSet rs = statement.executeQuery()) {
-                    rs.next();
-                    return mapFromAbsResultSet(rs);
+                    if (rs.next()){
+                        return mapFromAbsResultSet(rs);
+                    }else {
+                        logger.info("har en feil ved retrieve dersom id ikke finnes");
+                        return null;
+                    }
                 }
             }
         }
@@ -59,5 +65,4 @@ public abstract class AbstractForDao<T> {
     }
 
     protected abstract T mapFromAbsResultSet(ResultSet rs) throws SQLException;
-
 }

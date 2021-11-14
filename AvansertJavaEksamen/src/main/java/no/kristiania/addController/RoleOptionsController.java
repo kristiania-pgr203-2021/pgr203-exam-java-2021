@@ -1,10 +1,10 @@
-package no.kristiania.AddController;
+package no.kristiania.addController;
 
 import no.kristiania.http.HttpController;
 import no.kristiania.http.HttpMessage;
-import no.kristiania.questionnaire.Questionnaire;
-import no.kristiania.questionnaire.QuestionnaireDao;
-import no.kristiania.questionnaire.ScaleDao;
+import no.kristiania.Dao.Questionnaire;
+import no.kristiania.Dao.QuestionnaireDao;
+import no.kristiania.Dao.ScaleDao;
 
 import java.sql.SQLException;
 

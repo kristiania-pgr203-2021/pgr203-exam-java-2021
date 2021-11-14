@@ -2,15 +2,11 @@ package no.kristiania.listController;
 
 import no.kristiania.http.HttpController;
 import no.kristiania.http.HttpMessage;
-import no.kristiania.questionnaire.Questionnaire;
-import no.kristiania.questionnaire.QuestionnaireDao;
+import no.kristiania.Dao.Questionnaire;
+import no.kristiania.Dao.QuestionnaireDao;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ListAllWithScaleAndOption implements HttpController {
     private final QuestionnaireDao qreDao;

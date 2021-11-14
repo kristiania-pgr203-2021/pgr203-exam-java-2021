@@ -11,8 +11,9 @@ import java.util.*;
 import static no.kristiania.http.QuestionnaireServer.logger;
 
 public class HttpServer {
-    private final ServerSocket serverSocket;
+    private ServerSocket serverSocket;
     private final HashMap<String, HttpController> controllers = new HashMap<>();
+
 
     public HttpServer(int serverPort) throws IOException {
         serverSocket = new ServerSocket(serverPort);

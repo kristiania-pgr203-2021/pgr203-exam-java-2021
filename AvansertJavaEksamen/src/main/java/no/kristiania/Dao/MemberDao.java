@@ -1,4 +1,4 @@
-package no.kristiania.questionnaire;
+package no.kristiania.Dao;
 
 import javax.sql.DataSource;
 import java.sql.*;

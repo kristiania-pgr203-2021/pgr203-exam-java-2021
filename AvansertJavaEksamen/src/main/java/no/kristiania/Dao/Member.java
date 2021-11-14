@@ -1,4 +1,4 @@
-package no.kristiania.questionnaire;
+package no.kristiania.Dao;
 
 public class Member {
     private long id;

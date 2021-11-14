@@ -1,16 +1,12 @@
-package no.kristiania.AddController;
+package no.kristiania.addController;
 
 import no.kristiania.http.HttpController;
 import no.kristiania.http.HttpMessage;
-import no.kristiania.http.QuestionnaireServer;
-import no.kristiania.questionnaire.Member;
-import no.kristiania.questionnaire.MemberDao;
-import org.flywaydb.core.Flyway;
+import no.kristiania.Dao.Member;
+import no.kristiania.Dao.MemberDao;
 
-import javax.sql.DataSource;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 
 import static no.kristiania.http.QuestionnaireServer.logger;
@@ -73,7 +69,7 @@ public class AddNewMemberController implements HttpController {
           if (query != null) {
                     for (Member checking:
                             memberDao.listAll()) {
-                        if (checking.getEmail() != null || checking.getEmail().isEmpty()){
+                        if (checking.getEmail() != null || !checking.getEmail().isEmpty()){
                             setEmail = "<h5 style=color:green>You have been registered with this mail " +
                                     "\""+ checking.getEmail()+"\"</h5>";
                         }

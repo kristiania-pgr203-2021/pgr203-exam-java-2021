@@ -1,4 +1,4 @@
-package no.kristiania.questionnaire;
+package no.kristiania.Dao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -43,7 +43,7 @@ public class QuestionnaireDao extends AbstractForDao<Questionnaire> {
     }
 
     public List<Questionnaire> listAllByTitleID(long title) throws SQLException {
-        return super.retrieveOfLists(title, "select * from questions where id = ?");
+        return super.retrieveLists(title, "select * from questions where id = ?");
     }
 
     public List<String> listAllByTitle() throws SQLException {

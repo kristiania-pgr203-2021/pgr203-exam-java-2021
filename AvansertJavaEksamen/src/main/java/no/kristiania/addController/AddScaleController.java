@@ -1,8 +1,8 @@
-package no.kristiania.AddController;
+package no.kristiania.addController;
 
 import no.kristiania.http.HttpController;
 import no.kristiania.http.HttpMessage;
-import no.kristiania.questionnaire.*;
+import no.kristiania.Dao.*;
 
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;

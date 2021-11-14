@@ -1,4 +1,4 @@
-package no.kristiania.questionnaire;
+package no.kristiania.Dao;
 
 import org.flywaydb.core.Flyway;
 import org.h2.jdbcx.JdbcDataSource;

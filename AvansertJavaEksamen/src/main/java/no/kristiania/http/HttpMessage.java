@@ -6,11 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpMessage {
-
     public String startLine;
     public final Map<String, String> headerFields = new HashMap<>();
     public String messageBody;
     private String location;
+    private String cookie;
 
 
     public HttpMessage(Socket socket) throws IOException {
@@ -32,9 +32,11 @@ public class HttpMessage {
         this.location = location;
     }
 
-
-    public HttpMessage(String startLine){
+    public HttpMessage(String startLine, String messageBody, String location, String cookie){
         this.startLine = startLine;
+        this.messageBody = messageBody;
+        this.location = location;
+        this.cookie = cookie;
     }
 
     public static Map<String, String> parseRequestParameters(String query) {
@@ -90,6 +92,7 @@ public class HttpMessage {
                 "Content-Length: " + messageBody.getBytes().length + "\r\n" +
                 "Connection: close\r\n" +
                 "Content-type: text/html; charset=UTF-8" + "\r\n" +
+                "Set-Cookie: " + cookie + "\r\n" +
                 "Location: " + location + "\r\n" +
                 "\r\n" +
                 messageBody;

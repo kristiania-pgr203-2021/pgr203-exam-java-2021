@@ -1,6 +1,6 @@
 package no.kristiania.http;
 
-import no.kristiania.AddController.*;
+import no.kristiania.addController.*;
 import no.kristiania.UpdateController.UpdateQuestionTextController;
 import no.kristiania.UpdateController.UpdateQuestionTitleController;
 import no.kristiania.defaultController.EchoQueryController;
@@ -9,7 +9,7 @@ import no.kristiania.filterController.FilterByTitleController;
 import no.kristiania.filterController.FilterTitleOptionController;
 import no.kristiania.listController.ListAllWithScaleAndOption;
 import no.kristiania.listController.ListQuestionsController;
-import no.kristiania.questionnaire.*;
+import no.kristiania.Dao.*;
 import org.flywaydb.core.Flyway;
 import org.postgresql.ds.PGSimpleDataSource;
 import org.slf4j.Logger;
@@ -39,7 +39,7 @@ public class QuestionnaireServer {
 
     private static void httpServerControllers(QuestionnaireDao qreDao, OptionToQnDao option, ScaleDao scaleDao, MemberDao memberDao, HttpServer httpServer) {
         httpServer.addController(new EchoQueryController());
-        httpServer.addController(new AddOptionController(option));
+        httpServer.addController(new AddOptionController(option, memberDao));
         httpServer.addController(new AddNewMemberController(memberDao));
         httpServer.addController(new AddScaleController(scaleDao));
         httpServer.addController(new RoleOptionsController(qreDao, scaleDao));

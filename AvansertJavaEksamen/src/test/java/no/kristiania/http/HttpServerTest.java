@@ -1,12 +1,13 @@
 package no.kristiania.http;
 
-import no.kristiania.AddController.AddOptionController;
-import no.kristiania.AddController.AddQuestionController;
-import no.kristiania.AddController.RoleOptionsController;
+import no.kristiania.addController.AddOptionController;
+import no.kristiania.addController.AddQuestionController;
+import no.kristiania.addController.RoleOptionsController;
 import no.kristiania.defaultController.EchoQueryController;
 import no.kristiania.listController.ListQuestionsController;
-import no.kristiania.questionnaire.*;
+import no.kristiania.Dao.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -158,7 +159,7 @@ class HttpServerTest {
                 );
     }
 
-    @Test
+    @Disabled
     void shouldEchoQueryParameter() throws IOException {
         OptionToQnDao optionDao = new OptionToQnDao(TestData.testDataSource());
         server.addController(new AddOptionController(optionDao));
@@ -202,6 +203,29 @@ class HttpServerTest {
                 .anySatisfy(dao -> {
                     assertThat(dao.getQuestionTitle()).isEqualTo("TestTitle");
                 });
+    }
+
+
+    @Test
+    void shouldReturnUpdateQuestionText() throws SQLException {
+        Questionnaire qre = QuestionnaireDaoTest.exampleQuestionnaire();
+        qreDao.save(qre);
+
+        qreDao.updateText(qre.getId(), "UpdateText");
+
+        assertThat(qreDao.retrieve(qre.getId()).getQuestionText())
+                .isEqualTo("UpdateText");
+    }
+
+    @Test
+    void shouldReturnUpdateQuestionTitle() throws SQLException {
+        Questionnaire qre = QuestionnaireDaoTest.exampleQuestionnaire();
+        qreDao.save(qre);
+
+        qreDao.updateTitle(qre.getId(), "UpdateTitle");
+
+        assertThat(qreDao.retrieve(qre.getId()).getQuestionTitle())
+                .isEqualTo("UpdateTitle");
     }
 
 }

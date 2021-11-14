@@ -1,4 +1,4 @@
-package no.kristiania.questionnaire;
+package no.kristiania.Dao;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -36,7 +36,7 @@ public abstract class AbstractForDao<T> {
         }
     }
 
-    protected List<T> retrieveOfLists(long id, String commands) throws SQLException {
+    protected List<T> retrieveLists(long id, String commands) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     commands

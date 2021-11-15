@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update | Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Update Question:</h2>
+
+<form action="/api/updateTitle" method="POST">
+    <label>Update Title:<select name="title-id" id="title-id"></select></label>
+    <label>Update Title to: <input type="text" name="question-title"/></label>
+    <button>Click to update</button>
+</form>
+<br>
+<form action="/api/updateText" method="POST">
+    <label>Update text:<select name="text-id" id="text-id"></select></label>
+    <label>Update text to: <input type="text" name="question-text"/></label>
+    <button>Click to update</button>
+</form>
+
+
+<div>
+    <a href="index.html">Return to front page</a>
+</div>
+</body>
+
+<script>
+
+    fetch("/api/titleOptions").then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("title-id").innerHTML += text;
+    })
+
+    fetch("/api/textOptions").then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("text-id").innerHTML += text;
+    })
+
+</script>
+
+</html>

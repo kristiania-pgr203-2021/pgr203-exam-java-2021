@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filter | Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Filter questionnaire:</h2>
+
+<form action="/api/catchQuryTitle" method="get">
+    <label>Filter by Title:<select name="title-name" id="title-id"></select></label>
+    <button>Click to filter</button>
+</form>
+
+<form action="/api/searchOption" method="POST">
+    <label>Filter by question text: <input type="search" placeholder="search" name="question-name"/></label>
+    <button>Click to filter</button>
+</form>
+
+
+<div>
+    <a href="index.html">Return to front page</a>
+</div>
+</body>
+
+<script>
+
+    fetch("/api/titleOptions").then(function (res){
+        return res.text();
+    }).then(function (text){
+        document.getElementById("title-id").innerHTML += text;
+    })
+
+
+</script>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Scale | Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Add Scale to question</h1>
+
+<form method="GET" action="/api/scaleAlternative">
+    <label>Question:
+        <select id="questions" name="questions"></select></label>
+
+    <select  name="skalaOption">
+        <option>Enig</option>
+        <option>Litt enig</option>
+        <option>Verken eller</option>
+        <option>Litt uenig</option>
+        <option>Uenig</option>
+        <option>Helt uenig</option>
+    </select>
+
+    <button>Add</button>
+</form>
+
+<div>
+    <a href="index.html">Return to front page</a>
+</div>
+</body>
+<script>
+
+    fetch("/api/questionOptions")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("questions").innerHTML = text;
+    });
+
+    fetch("/api/questionOptionsSkala")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("skala").innerHTML = text;
+    });
+
+</script>
+</html>

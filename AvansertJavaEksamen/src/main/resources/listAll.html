@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List | Kristiania Questionnaire</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+
+<h1>Questionnaire</h1>
+
+
+<div id="allquestions"></div><div>
+
+    <a href="newQuestionnaire.html">Add new questions</a><br>
+    <a href="addOption.html">Add option to question</a><br>
+    <a href="ScaleToQuestion.html">Add Scale to question</a><br>
+    <a href="questionnaireFilter.html">Filter qustionnaire</a><br>
+    <a href="updateQuestion.html">Update question</a><br>
+    <a href="index.html">Return to front page</a>
+
+</div>
+
+</body>
+<script>
+    fetch("/api/allquestions")
+        .then(function(response) {
+            return response.text();
+        }).then(function(text) {
+        document.getElementById("allquestions").innerHTML = text;
+    });
+</script>
+</html>

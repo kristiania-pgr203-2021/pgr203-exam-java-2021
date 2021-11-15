@@ -55,6 +55,9 @@ blitt registrert med.
 
 * addNewMembersController håndterer controllers slik at en GET og en POST request kan ha samme request target.
 
+OBS. Programmet fungerer, men vi opplever utfordringer når vi pakker JAR som for oss framstår uforståelige. Da vi kjørte JAR-filer viste HTML-koden seg å ikke være encodet som den skulle. Vår dataSource befinner seg i QuestionnaireServer.java. 
+Slik ligger det i FileReader i filens linje 63: FileReader("AvansertJavaEksamen/pgr203.properties")
+
 
 ## Korreksjoner av eksamensteksten i Wiseflow:
 
@@ -83,9 +86,9 @@ blitt registrert med.
 
 ### Koden
 
-* [ ] `mvn package` bygger en executable jar-fil
+* [x] `mvn package` bygger en executable jar-fil
 * [x] Koden inneholder et godt sett med tester
-* [ ] `java -jar target/...jar` (etter `mvn package`) lar bruker legge til og liste ut data fra databasen via webgrensesnitt
+* [x] `java -jar target/...jar` (etter `mvn package`) lar bruker legge til og liste ut data fra databasen via webgrensesnitt
 * [x] Serveren leser HTML-filer fra JAR-filen slik at den ikke er avhengig av å kjøre i samme directory som kildekoden
 * [x] Programmet leser `dataSource.url`, `dataSource.username` og `dataSource.password` fra `pgr203.properties` for å connecte til databasen
 * [x] Programmet bruker Flywaydb for å sette opp databaseskjema

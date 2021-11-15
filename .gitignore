@@ -2,3 +2,4 @@
 *.iml
 target/
 /AvansertJavaEksamen/pgr203.properties
+/AvansertJavaEksamen/dependency-reduced-pom.xml
